@@ -1,0 +1,4 @@
+scenario,observed_api_status,evidence,interpretation
+unauthorized-attempt,403,"Role ""applicant_case_manager"" is not allowed to perform ""record_domestic_review""","role and organization restrictions enforced at the ledger-governed workflow layer"
+missing-document-path,400,"Missing required document types: assurance_application_form, item_technical_specification, end_use_declaration","minimum submission bundle enforced before state advancement"
+invalid-transition-attempt,400,"No transition is defined for action ""forward_to_foreign_authority"" from state ""under_domestic_review""","transition ordering enforced by workflow policy"

@@ -1,0 +1,1547 @@
+{
+  "scenarioCount": 9,
+  "results": [
+    {
+      "scenarioId": "normal-approval-fuel-shipment",
+      "caseId": "case-cf747c28-0e79-4f36-9e97-e91cfd38d82b",
+      "terminalState": "issued",
+      "caseStateAfterScenario": "issued",
+      "durationMs": 35448,
+      "auditEventCount": 8,
+      "verifiedDocuments": [
+        "doc-28ebd809-da29-4eac-b3e4-acbca6209361"
+      ],
+      "metricsSummary": [
+        {
+          "metricId": "fabric_invoke_latency_ms",
+          "count": 17,
+          "min": 2026.8725999999988,
+          "max": 2258.7133,
+          "average": 2044.748029411764,
+          "p50": 2029.6103999999978,
+          "p95": 2258.7133
+        },
+        {
+          "metricId": "transaction_success_count",
+          "count": 17,
+          "min": 1,
+          "max": 1,
+          "average": 1,
+          "p50": 1,
+          "p95": 1
+        },
+        {
+          "metricId": "case_creation_latency_ms",
+          "count": 1,
+          "min": 2279.8066,
+          "max": 2279.8066,
+          "average": 2279.8066,
+          "p50": 2279.8066,
+          "p95": 2279.8066
+        },
+        {
+          "metricId": "document_anchor_latency_ms",
+          "count": 9,
+          "min": 2064.643100000001,
+          "max": 2103.5288,
+          "average": 2076.7542888888893,
+          "p50": 2068.271499999999,
+          "p95": 2103.5288
+        },
+        {
+          "metricId": "transition_latency_ms",
+          "count": 7,
+          "min": 2036.0071000000025,
+          "max": 2108.156500000001,
+          "average": 2050.1641571428577,
+          "p50": 2037.6123999999982,
+          "p95": 2108.156500000001
+        },
+        {
+          "metricId": "document_integrity_verification_ms",
+          "count": 1,
+          "min": 8.908400000000256,
+          "max": 8.908400000000256,
+          "average": 8.908400000000256,
+          "p50": 8.908400000000256,
+          "p95": 8.908400000000256
+        },
+        {
+          "metricId": "scenario_end_to_end_ms",
+          "count": 1,
+          "min": 35448,
+          "max": 35448,
+          "average": 35448,
+          "p50": 35448,
+          "p95": 35448
+        },
+        {
+          "metricId": "audit_reconstruction_ms",
+          "count": 1,
+          "min": 4.9033999999955995,
+          "max": 4.9033999999955995,
+          "average": 4.9033999999955995,
+          "p50": 4.9033999999955995,
+          "p95": 4.9033999999955995
+        }
+      ],
+      "steps": [
+        {
+          "step": "create_draft",
+          "state": "draft",
+          "transactionId": "f91079829d86f5449ac0f3a3db21bf380f8e3d1c9e80c76ebb65cdf4da2880d9",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:assurance_application_form",
+          "documentId": "doc-3f32ee41-2103-4929-8a9c-dca4d0ebf2d3",
+          "transactionId": "c8cbe8e293eebe00356fa0fd050cd49e8376dfff48120d9b6c18f1755c254c5c",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:item_technical_specification",
+          "documentId": "doc-b8c1df6d-b5ef-45fb-9f57-40a696349795",
+          "transactionId": "546d719db350f3f5d223608ea7eed4bb02168d52d141c9577d9d6bc9e378ec67",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:end_use_declaration",
+          "documentId": "doc-8f6207fe-b24f-4fa5-bb63-1824d3afb887",
+          "transactionId": "195119bc886b11c05e3f621b13554f4590cc92e26ed6139322e40928e4b84f46",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:supporting_correspondence",
+          "documentId": "doc-147833c7-eac8-4a95-b105-1af98e1ac118",
+          "transactionId": "be1865335927644cc39d113a73f4c815dc477a6d7b49b6b12b92d9d6db25f367",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:transport_authorization",
+          "documentId": "doc-08400ab7-7ad4-47cb-82db-fa5c946e7ed9",
+          "transactionId": "48f54004f0efbeb33ae2d5a9052f0563e073bcab79278f65edac88c1c329973a",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:package_design_certificate",
+          "documentId": "doc-ace715bd-9e5f-41be-863a-d39d54fe803c",
+          "transactionId": "a586302d8346450705844e74e09701e08f752d1604d3783426119d986b1bb7f9",
+          "outcome": "success"
+        },
+        {
+          "step": "submit_case",
+          "state": "submitted",
+          "transactionId": "cbf9ab96c7978c9042e4267dbed6b606cd6220eccec9ae16853f1c88ecbe283d",
+          "outcome": "success"
+        },
+        {
+          "step": "record_domestic_review",
+          "state": "under_domestic_review",
+          "transactionId": "388cb30489e3244965d6e1e046f5e3cc7e8056b09df9cdf354940c58fff336d4",
+          "outcome": "success"
+        },
+        {
+          "step": "forward_to_coordination",
+          "state": "awaiting_coordination",
+          "transactionId": "0d2887e24459d3029c8d1d58e226bff2a56a2d04c3f240a8d806d86767371689",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:coordination_forwarding_package",
+          "documentId": "doc-22672f02-0e19-4dfe-9fe9-ff3cab33282f",
+          "transactionId": "61a4221c0cf82c08703b0388060a4e49242234eb477b4816403e3815b475e993",
+          "outcome": "success"
+        },
+        {
+          "step": "forward_to_foreign_authority",
+          "state": "forwarded_to_foreign_authority",
+          "transactionId": "a698b12fdc8401b41621df5931c28a89993ca3374b876f509818c07834b5dfd4",
+          "outcome": "success"
+        },
+        {
+          "step": "record_foreign_review",
+          "state": "under_foreign_review",
+          "transactionId": "0878b1a9ade015e88cd24118df4733b4b8ef655edd3ca36ce01fbe32444e911c",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:foreign_regulator_response",
+          "documentId": "doc-244d92d8-d987-4260-8c4f-eba7f1447e2f",
+          "transactionId": "05b31b54d9ba8bac8d9214317f1ea710e2488ad7eb55b0aa007bada55accc7fa",
+          "outcome": "success"
+        },
+        {
+          "step": "approve_case",
+          "state": "approved",
+          "transactionId": "8021b025688bb1a9e7ed8d38b91e4d8cd372f5563b82063f645c8c20c81c7a6d",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:assurance_instrument",
+          "documentId": "doc-28ebd809-da29-4eac-b3e4-acbca6209361",
+          "transactionId": "bebbb44a4c8d402233c4e73aacdd865bbd5f4af494b63920e05124cbae13e236",
+          "outcome": "success"
+        },
+        {
+          "step": "issue_assurance",
+          "state": "issued",
+          "transactionId": "8af02f82a7975cbaaaf063f5b9e35cc245537f202de91ba8ae86379b5bea9a5e",
+          "outcome": "success"
+        }
+      ]
+    },
+    {
+      "scenarioId": "more-info-loop",
+      "caseId": "case-c64fc30d-9f1a-4af4-a463-2f5622e8e6d5",
+      "terminalState": "issued",
+      "caseStateAfterScenario": "issued",
+      "durationMs": 43386,
+      "auditEventCount": 10,
+      "verifiedDocuments": [
+        "doc-d9263870-0ae8-416b-9844-8da23fc07eae"
+      ],
+      "metricsSummary": [
+        {
+          "metricId": "fabric_invoke_latency_ms",
+          "count": 21,
+          "min": 2024.464899999999,
+          "max": 2077.6227999999974,
+          "average": 2033.9641380952394,
+          "p50": 2028.4172000000035,
+          "p95": 2064.679400000008
+        },
+        {
+          "metricId": "transaction_success_count",
+          "count": 21,
+          "min": 1,
+          "max": 1,
+          "average": 1,
+          "p50": 1,
+          "p95": 1
+        },
+        {
+          "metricId": "case_creation_latency_ms",
+          "count": 1,
+          "min": 2054.4625000000015,
+          "max": 2054.4625000000015,
+          "average": 2054.4625000000015,
+          "p50": 2054.4625000000015,
+          "p95": 2054.4625000000015
+        },
+        {
+          "metricId": "document_anchor_latency_ms",
+          "count": 11,
+          "min": 2063.9205000000075,
+          "max": 2118.5416000000114,
+          "average": 2075.5474636363665,
+          "p50": 2067.3153999999995,
+          "p95": 2118.5416000000114
+        },
+        {
+          "metricId": "transition_latency_ms",
+          "count": 9,
+          "min": 2033.0238000000027,
+          "max": 2129.482600000003,
+          "average": 2049.779122222224,
+          "p50": 2035.1907999999967,
+          "p95": 2129.482600000003
+        },
+        {
+          "metricId": "document_integrity_verification_ms",
+          "count": 1,
+          "min": 10.7841000000044,
+          "max": 10.7841000000044,
+          "average": 10.7841000000044,
+          "p50": 10.7841000000044,
+          "p95": 10.7841000000044
+        },
+        {
+          "metricId": "scenario_end_to_end_ms",
+          "count": 1,
+          "min": 43386,
+          "max": 43386,
+          "average": 43386,
+          "p50": 43386,
+          "p95": 43386
+        },
+        {
+          "metricId": "audit_reconstruction_ms",
+          "count": 1,
+          "min": 4.385499999989406,
+          "max": 4.385499999989406,
+          "average": 4.385499999989406,
+          "p50": 4.385499999989406,
+          "p95": 4.385499999989406
+        }
+      ],
+      "steps": [
+        {
+          "step": "create_draft",
+          "state": "draft",
+          "transactionId": "4b62b847d4f8c1a904c820d69226edbf695b943d58935282c6f28511f0f4c782",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:assurance_application_form",
+          "documentId": "doc-539ec880-a46d-4fb0-9c9d-986f54942f8e",
+          "transactionId": "acff571d70334de6850d77a91dc7d97a10ae4af2e3dbd6c8b826b3cc4d11a43c",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:item_technical_specification",
+          "documentId": "doc-343aaffc-6948-43ac-9284-3e8d680ad605",
+          "transactionId": "e6c751353d3c7d6031c1da16d06a006893f86320090dd58d385acf1da15fdb94",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:end_use_declaration",
+          "documentId": "doc-4de6340d-6429-436c-89b1-cfe8bf1ae207",
+          "transactionId": "1c0b0f0c8e2c4937f534e570090c093b16397089adf830da3b385efe1b79d1df",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:supporting_correspondence",
+          "documentId": "doc-7d903317-7a77-4d69-96da-048ab67c0c1a",
+          "transactionId": "1b1d4135387425bf6a5475421022cf836002b9eb35eb694495bd95750f6222ac",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:transport_authorization",
+          "documentId": "doc-01d8fdd9-3255-4a11-9a5d-c10a31c8f3ac",
+          "transactionId": "a6051a0c6e7917db6fde1a5067f047cdb31effa6d5d6cf350dd753588b06ceef",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:package_design_certificate",
+          "documentId": "doc-77f9e576-fc3b-49a0-881f-bc9fca371eb4",
+          "transactionId": "73dfede3c7ed1c7fd9b1e35765cc71a6b64438d15a781e8ec709bffcb8ee3bce",
+          "outcome": "success"
+        },
+        {
+          "step": "submit_case",
+          "state": "submitted",
+          "transactionId": "22029b858b37fed706c4106ac3914deed9e21fd4d4e5632dc0a01fff9f98d6d8",
+          "outcome": "success"
+        },
+        {
+          "step": "record_domestic_review",
+          "state": "under_domestic_review",
+          "transactionId": "ef89602fde750ea698cedc72cea34c7216175b7d6c491a08cc1e208d3eec2859",
+          "outcome": "success"
+        },
+        {
+          "step": "forward_to_coordination",
+          "state": "awaiting_coordination",
+          "transactionId": "add85e404f7c1e045a6820c25c15a7905bd66e0465759a36cea32e09c18a4b16",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:coordination_forwarding_package",
+          "documentId": "doc-6cf2f2b2-7b8e-4610-88d1-11a946954fe2",
+          "transactionId": "9ee9010adad99adb3f9cfb03280e5c21fa4adc5ceb580e4a6e69c5293873ef6f",
+          "outcome": "success"
+        },
+        {
+          "step": "forward_to_foreign_authority",
+          "state": "forwarded_to_foreign_authority",
+          "transactionId": "2cc34790b6a69b7d08ec5c9ac5b3ce1d0fe6cfecaca8bc1731cc681274e712a3",
+          "outcome": "success"
+        },
+        {
+          "step": "record_foreign_review",
+          "state": "under_foreign_review",
+          "transactionId": "aef8e2e042a45afb9f795e39e107be2c460aea9598e5715b5629ee78faf7239b",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:request_for_information_notice",
+          "documentId": "doc-f05a35b9-6d20-4e55-86fa-4af00693b342",
+          "transactionId": "745cf9ffa7320722edeeff14cd4723b6112acc509d3ad799414da5b947e1bfd3",
+          "outcome": "success"
+        },
+        {
+          "step": "request_more_information",
+          "state": "more_information_requested",
+          "transactionId": "2beecefddc5ba5cd862bcc6dc698ffc443dfe918592edda43e6a707782242dea",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:response_to_information_package",
+          "documentId": "doc-b2556d00-1854-4b80-b737-9a2c42ac6ce9",
+          "transactionId": "b15bec91092e6dab6f74b1a88bb8d54f740c4316c0e990076ce0c78399f92f32",
+          "outcome": "success"
+        },
+        {
+          "step": "respond_to_information_request",
+          "state": "under_foreign_review",
+          "transactionId": "f96673fbdcaa06a1b5c6cb8f5bd6f72f9f02dd69f1d535067b3e9aedcc432d60",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:foreign_regulator_response",
+          "documentId": "doc-e5d5d4a3-a351-45c1-b2a7-cbff24b96927",
+          "transactionId": "7e240d98de8981a22798d9bf9f62cc1f499c479b186bae2b8cbf39be2e7d5f5c",
+          "outcome": "success"
+        },
+        {
+          "step": "approve_case_after_more_info",
+          "state": "approved",
+          "transactionId": "3707e531a256e6dfe36ea58db0e8e347d77181b60705267cd8b2860be935c98f",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:assurance_instrument",
+          "documentId": "doc-d9263870-0ae8-416b-9844-8da23fc07eae",
+          "transactionId": "7b8c6ed1de4d96534a026fad9c22a8e2776f6808157b2c0709d2da785b134a49",
+          "outcome": "success"
+        },
+        {
+          "step": "issue_assurance_after_more_info",
+          "state": "issued",
+          "transactionId": "b8f29e1ae847599cd467705ba8fb75688df5d6b6fb55017d2b15d7b79bd3529b",
+          "outcome": "success"
+        }
+      ]
+    },
+    {
+      "scenarioId": "rejection-missing-documents",
+      "caseId": "case-5b1733c8-2483-46e7-947d-e936fec8f9dc",
+      "terminalState": "rejected",
+      "caseStateAfterScenario": "rejected",
+      "durationMs": 14420,
+      "auditEventCount": 4,
+      "verifiedDocuments": [],
+      "metricsSummary": [
+        {
+          "metricId": "fabric_invoke_latency_ms",
+          "count": 7,
+          "min": 2024.8233999999939,
+          "max": 2032.9407999999967,
+          "average": 2028.9857285714243,
+          "p50": 2029.748099999997,
+          "p95": 2032.9407999999967
+        },
+        {
+          "metricId": "transaction_success_count",
+          "count": 7,
+          "min": 1,
+          "max": 1,
+          "average": 1,
+          "p50": 1,
+          "p95": 1
+        },
+        {
+          "metricId": "case_creation_latency_ms",
+          "count": 1,
+          "min": 2041.164499999999,
+          "max": 2041.164499999999,
+          "average": 2041.164499999999,
+          "p50": 2041.164499999999,
+          "p95": 2041.164499999999
+        },
+        {
+          "metricId": "document_anchor_latency_ms",
+          "count": 3,
+          "min": 2061.2887000000046,
+          "max": 2068.541400000002,
+          "average": 2064.334533333337,
+          "p50": 2063.1735000000044,
+          "p95": 2068.541400000002
+        },
+        {
+          "metricId": "transition_latency_ms",
+          "count": 3,
+          "min": 2034.405899999998,
+          "max": 2102.655199999994,
+          "average": 2057.303399999995,
+          "p50": 2034.8490999999922,
+          "p95": 2102.655199999994
+        },
+        {
+          "metricId": "scenario_end_to_end_ms",
+          "count": 1,
+          "min": 14420,
+          "max": 14420,
+          "average": 14420,
+          "p50": 14420,
+          "p95": 14420
+        },
+        {
+          "metricId": "audit_reconstruction_ms",
+          "count": 1,
+          "min": 26.482600000003004,
+          "max": 26.482600000003004,
+          "average": 26.482600000003004,
+          "p50": 26.482600000003004,
+          "p95": 26.482600000003004
+        }
+      ],
+      "steps": [
+        {
+          "step": "create_draft",
+          "state": "draft",
+          "transactionId": "ee6acb66528471788459288f503e16607a0a5cc4ba44eb4918994be0c67fcd1a",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:assurance_application_form",
+          "documentId": "doc-41524c3f-9798-49d1-9167-c28188d3fea3",
+          "transactionId": "5c3717a0db0b7a372ce10ae1171ee494ade0ae5774bb2c3cb2b30d07a4a11a11",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:item_technical_specification",
+          "documentId": "doc-e20eb6a7-3ca8-48a7-a434-345590570b2e",
+          "transactionId": "23024bb6ed9607e08e25e1aa67dd4c3d399d07b40dbd4637b0b92b12d14b07d7",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:end_use_declaration",
+          "documentId": "doc-ba10ff9a-20a9-42e7-ad7d-148cfd73de16",
+          "transactionId": "28e7fca68c21a87384346152202eb50f476ea79e75ff84960e6b347ece752885",
+          "outcome": "success"
+        },
+        {
+          "step": "submit_case",
+          "state": "submitted",
+          "transactionId": "f4ed0e67fa516fd7f15716aadb14cb52df896702328dd1ee0e10adffb69f6f44",
+          "outcome": "success"
+        },
+        {
+          "step": "record_domestic_review",
+          "state": "under_domestic_review",
+          "transactionId": "32a01a0272bf2dd00152a31bf3dab7a17d2793fc5ad4dd507bdf773b3e76fe98",
+          "outcome": "success"
+        },
+        {
+          "step": "reject_case",
+          "state": "rejected",
+          "transactionId": "20ef925ea148f204dca480d8103c35003a0ffdd5c7a2b8a9ae8b0ff2a7ad0a77",
+          "outcome": "success"
+        }
+      ]
+    },
+    {
+      "scenarioId": "substantive-amendment-post-issuance",
+      "caseId": "case-83d8fbb0-f477-4720-be39-00b358ab5875",
+      "terminalState": "amended",
+      "caseStateAfterScenario": "amended",
+      "durationMs": 55771,
+      "auditEventCount": 14,
+      "verifiedDocuments": [
+        "doc-a0f7de7e-4aa5-4349-912c-6208fbbc575e"
+      ],
+      "metricsSummary": [
+        {
+          "metricId": "fabric_invoke_latency_ms",
+          "count": 27,
+          "min": 2024.824900000007,
+          "max": 2051.056600000011,
+          "average": 2031.3106555555573,
+          "p50": 2029.5612999999867,
+          "p95": 2043.6402999999991
+        },
+        {
+          "metricId": "transaction_success_count",
+          "count": 27,
+          "min": 1,
+          "max": 1,
+          "average": 1,
+          "p50": 1,
+          "p95": 1
+        },
+        {
+          "metricId": "case_creation_latency_ms",
+          "count": 1,
+          "min": 2034.0926000000036,
+          "max": 2034.0926000000036,
+          "average": 2034.0926000000036,
+          "p50": 2034.0926000000036,
+          "p95": 2034.0926000000036
+        },
+        {
+          "metricId": "document_anchor_latency_ms",
+          "count": 13,
+          "min": 2063.2802999999985,
+          "max": 2083.1155,
+          "average": 2071.7185230769223,
+          "p50": 2069.6514000000025,
+          "p95": 2083.1155
+        },
+        {
+          "metricId": "transition_latency_ms",
+          "count": 13,
+          "min": 2032.1733999999997,
+          "max": 2195.5836999999883,
+          "average": 2056.861823076924,
+          "p50": 2038.6328999999969,
+          "p95": 2195.5836999999883
+        },
+        {
+          "metricId": "document_integrity_verification_ms",
+          "count": 1,
+          "min": 10.252899999992223,
+          "max": 10.252899999992223,
+          "average": 10.252899999992223,
+          "p50": 10.252899999992223,
+          "p95": 10.252899999992223
+        },
+        {
+          "metricId": "scenario_end_to_end_ms",
+          "count": 1,
+          "min": 55771,
+          "max": 55771,
+          "average": 55771,
+          "p50": 55771,
+          "p95": 55771
+        },
+        {
+          "metricId": "audit_reconstruction_ms",
+          "count": 1,
+          "min": 5.774399999994785,
+          "max": 5.774399999994785,
+          "average": 5.774399999994785,
+          "p50": 5.774399999994785,
+          "p95": 5.774399999994785
+        }
+      ],
+      "steps": [
+        {
+          "step": "create_draft",
+          "state": "draft",
+          "transactionId": "a2791eb22765b1d2051ac9d8ddca0b78238a0f48d50c1aeffdfa1339ac00a517",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:assurance_application_form",
+          "documentId": "doc-892ec6a4-00ca-4995-8929-f65db0354807",
+          "transactionId": "a9a2f4df67bc10c05fd399c09957e52b22cd5c5f72ebc33cc4e39bf9ac828a9b",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:item_technical_specification",
+          "documentId": "doc-5753646f-32b2-41f1-a6f6-dc78c83f1773",
+          "transactionId": "0aa53d1f5fa4caf449b81d08487fa6493f415d7b7fb69de4135ad95bbe9efed3",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:end_use_declaration",
+          "documentId": "doc-c5d3b2ea-e0e6-43f7-beb7-d2ddb0b5f0f5",
+          "transactionId": "a91a82a172ea95cb53750572854510df17e01d8fbbf8a7c4e8a45e58607def20",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:supporting_correspondence",
+          "documentId": "doc-255ceb08-ab26-44bb-8c8c-867fa66662bb",
+          "transactionId": "0172457bad26a75d4d5a4b9fc9661239cc8b29c3ad4796fa9846ffc8cd26a378",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:transport_authorization",
+          "documentId": "doc-fa208373-afed-47b2-af2e-f9520e480235",
+          "transactionId": "a3f8ffb370fd8ce2b33a25c676e6081dadc21d45c62b5696db7d964ad7b6b658",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:package_design_certificate",
+          "documentId": "doc-db93eb49-d684-4988-8777-8cf7d7af5e37",
+          "transactionId": "6475ce5153e9ba24b5b1350f56abc2489638fd71f4b72a338e0f2a0a9f016e71",
+          "outcome": "success"
+        },
+        {
+          "step": "submit_case",
+          "state": "submitted",
+          "transactionId": "cbd706b2570012e67d0f7a29bdf19342b57f1ec25cb040ccb6ac2feb8dd71831",
+          "outcome": "success"
+        },
+        {
+          "step": "record_domestic_review",
+          "state": "under_domestic_review",
+          "transactionId": "8c21bc417b51dc54c9c91f19803c72c78f3fde30bed6bab4757af21a63670774",
+          "outcome": "success"
+        },
+        {
+          "step": "forward_to_coordination",
+          "state": "awaiting_coordination",
+          "transactionId": "3a59dbb8ec7659555ac3be2c492519ab51ada8cbe5bfcef73950ea046eca44ec",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:coordination_forwarding_package",
+          "documentId": "doc-ac2bfc8a-c782-4d74-95bc-fd0fcb0e65cf",
+          "transactionId": "dc6a731036588616b88d2674d5b63e513d06c1ab91d671454ce204e75f15035e",
+          "outcome": "success"
+        },
+        {
+          "step": "forward_to_foreign_authority",
+          "state": "forwarded_to_foreign_authority",
+          "transactionId": "cfabf226f31c0f447c977970a3c35d816866ba6b872924057adec91792c8d2e3",
+          "outcome": "success"
+        },
+        {
+          "step": "record_foreign_review",
+          "state": "under_foreign_review",
+          "transactionId": "3c7fbad5695ac6e0cf4bb77596676c6935d8060df5e5f15d8d4e16e6d6befe5a",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:foreign_regulator_response",
+          "documentId": "doc-2734b35c-fc7c-42aa-8f09-cd458b48889a",
+          "transactionId": "a45e30a6cebfdcf49f506469494d61376a7017aacf7314289e23408904779a0b",
+          "outcome": "success"
+        },
+        {
+          "step": "approve_case",
+          "state": "approved",
+          "transactionId": "fb6d46c677094174c9b73e568cb886722c841a49513c7e459a589f772b12c962",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:assurance_instrument",
+          "documentId": "doc-a1447418-2955-4e0b-bb7b-18494a59e449",
+          "transactionId": "28d6ee7b384da024c5bbeb386fb5ea45bf95150e3f4f45d1fcd2f6379ac82f7b",
+          "outcome": "success"
+        },
+        {
+          "step": "issue_assurance",
+          "state": "issued",
+          "transactionId": "e8a5d885802fd213d928d48cb83905df7dba4d4205019a442064269cfefcedcb",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:amendment_request_package",
+          "documentId": "doc-a3292100-1df2-43af-8eee-4a161ef5996a",
+          "transactionId": "72c230d9010fe7d58be97ea594caba5e5d5500fe81c16a10014a7052ca97202b",
+          "outcome": "success"
+        },
+        {
+          "step": "initiate_substantive_amendment",
+          "state": "under_domestic_review",
+          "transactionId": "acdb6e546c2778995c839f39a941b48a0f0ed557327645676d9190c2220666d2",
+          "outcome": "success"
+        },
+        {
+          "step": "forward_to_coordination_amendment",
+          "state": "awaiting_coordination",
+          "transactionId": "b6d35cfa37aa9979685f7e38d6e7edaffa54d69270921528d9bac1077c618856",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:coordination_forwarding_package",
+          "documentId": "doc-9136492b-eaf7-486b-8aa5-636a352eb13a",
+          "transactionId": "b8443201e10eadeb16ce6290a5fdcd9028e53052bcb2fadeaef4de48e603363d",
+          "outcome": "success"
+        },
+        {
+          "step": "forward_to_foreign_authority_amendment",
+          "state": "forwarded_to_foreign_authority",
+          "transactionId": "6c3291cece798ad2414f25f698054e0f56d7443579b0ece9836b15242effcce0",
+          "outcome": "success"
+        },
+        {
+          "step": "record_foreign_review_amendment",
+          "state": "under_foreign_review",
+          "transactionId": "2dcf6a0aad41f6746cdcef873f7b9dc78ccb40a231945eee6238648175eb96a1",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:foreign_regulator_response",
+          "documentId": "doc-df4d89e6-f7b3-4881-9149-bf3c3347dbc0",
+          "transactionId": "249f1987203a26aa1f7e69244303c9926aeb4f24b3a171721a4dc28be313daec",
+          "outcome": "success"
+        },
+        {
+          "step": "approve_case_amendment",
+          "state": "approved",
+          "transactionId": "3cfea61e7dcc1699c163095f936d28d0ae202ce0e26ef69e69f148b1de6101f4",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:assurance_instrument",
+          "documentId": "doc-a0f7de7e-4aa5-4349-912c-6208fbbc575e",
+          "transactionId": "163fa791a7ee47166c3951f5699d50c3f9d6b0cb6165b1d63ff8373f084bb86f",
+          "outcome": "success"
+        },
+        {
+          "step": "amend_assurance",
+          "state": "amended",
+          "transactionId": "0899afd86fee29750ad79f48728af39d0b2a6c06a31174a4aef8d4f93a5bd743",
+          "outcome": "success"
+        }
+      ]
+    },
+    {
+      "scenarioId": "non-substantive-amendment-post-issuance",
+      "caseId": "case-bbe78221-5b49-4506-b1e4-d7f67841ae36",
+      "terminalState": "amended",
+      "caseStateAfterScenario": "amended",
+      "durationMs": 43357,
+      "auditEventCount": 10,
+      "verifiedDocuments": [
+        "doc-08450264-20d6-476c-a7b2-cf4a4fafc7cd"
+      ],
+      "metricsSummary": [
+        {
+          "metricId": "fabric_invoke_latency_ms",
+          "count": 21,
+          "min": 2025.8544999999867,
+          "max": 2037.9736000000266,
+          "average": 2029.3859428571457,
+          "p50": 2028.9921000000031,
+          "p95": 2032.9770999999892
+        },
+        {
+          "metricId": "transaction_success_count",
+          "count": 21,
+          "min": 1,
+          "max": 1,
+          "average": 1,
+          "p50": 1,
+          "p95": 1
+        },
+        {
+          "metricId": "case_creation_latency_ms",
+          "count": 1,
+          "min": 2042.6918000000005,
+          "max": 2042.6918000000005,
+          "average": 2042.6918000000005,
+          "p50": 2042.6918000000005,
+          "p95": 2042.6918000000005
+        },
+        {
+          "metricId": "document_anchor_latency_ms",
+          "count": 11,
+          "min": 2064.875299999985,
+          "max": 2087.2826999999816,
+          "average": 2071.8005545454535,
+          "p50": 2067.8785000000207,
+          "p95": 2087.2826999999816
+        },
+        {
+          "metricId": "transition_latency_ms",
+          "count": 9,
+          "min": 2032.122000000003,
+          "max": 2109.178199999995,
+          "average": 2052.0532555555565,
+          "p50": 2037.239900000015,
+          "p95": 2109.178199999995
+        },
+        {
+          "metricId": "document_integrity_verification_ms",
+          "count": 1,
+          "min": 11.8579000000027,
+          "max": 11.8579000000027,
+          "average": 11.8579000000027,
+          "p50": 11.8579000000027,
+          "p95": 11.8579000000027
+        },
+        {
+          "metricId": "scenario_end_to_end_ms",
+          "count": 1,
+          "min": 43357,
+          "max": 43357,
+          "average": 43357,
+          "p50": 43357,
+          "p95": 43357
+        },
+        {
+          "metricId": "audit_reconstruction_ms",
+          "count": 1,
+          "min": 5.815999999991618,
+          "max": 5.815999999991618,
+          "average": 5.815999999991618,
+          "p50": 5.815999999991618,
+          "p95": 5.815999999991618
+        }
+      ],
+      "steps": [
+        {
+          "step": "create_draft",
+          "state": "draft",
+          "transactionId": "e0b5400a40261bc99ba63a5a73d382bbb9197083b377b7517cd005fd2a89bb42",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:assurance_application_form",
+          "documentId": "doc-53bc2118-9a53-4724-afb1-015af1f6923a",
+          "transactionId": "a75496b8e1b0e6920b67568ca0e2238cec4bcc31e2ab3ae054103b805c722abd",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:item_technical_specification",
+          "documentId": "doc-28c0a61c-31b3-49a5-b5b2-c02efda3d39a",
+          "transactionId": "659828d9a662d1aaac9fd6d2506dc53ef7e1dd40a2348469dc8b96802a0a3f77",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:end_use_declaration",
+          "documentId": "doc-069c7ed8-c869-48b7-8921-6ccb20545627",
+          "transactionId": "33da2ab189d3ff28de56cd4046807ea71307f03ccdc94ce3c5d42fdcbdd11032",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:supporting_correspondence",
+          "documentId": "doc-6ec9fdc3-2e76-4e0c-b584-de6545cc6354",
+          "transactionId": "2912d4689607dc47469bc294e3ef339087f785f09c0c4917f2bf2ade670ce7ba",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:transport_authorization",
+          "documentId": "doc-6fa879ea-2ad2-4c44-91d5-07d19a2f8850",
+          "transactionId": "4b6c3b4868468f2d3ab853aa8af385da6ef4920ff0322ecc35f571eea78ed8eb",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:package_design_certificate",
+          "documentId": "doc-ba48ea15-d77d-4e8f-a545-498692fcdab3",
+          "transactionId": "7b1c4ac922f596a6ff1788e0a17ac118c573f3678a1b3432e39f2604b567dfb9",
+          "outcome": "success"
+        },
+        {
+          "step": "submit_case",
+          "state": "submitted",
+          "transactionId": "99d034b92e78530c24c9b76193561bbcd3b845c523ba0f7d8ab2b8e8383dba7e",
+          "outcome": "success"
+        },
+        {
+          "step": "record_domestic_review",
+          "state": "under_domestic_review",
+          "transactionId": "ace9539796fc8c8ea44e1c8dd1322830501525a46b59edc941683fb78ac0e98e",
+          "outcome": "success"
+        },
+        {
+          "step": "forward_to_coordination",
+          "state": "awaiting_coordination",
+          "transactionId": "9be96fd344931a20b9625eb4de11a36ee9b51a4e5ed7e8a1f6ade839643f6462",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:coordination_forwarding_package",
+          "documentId": "doc-4f3e5234-d5fc-4b36-94c7-d5a803f59c9c",
+          "transactionId": "fc34881803b6c6b6423b9d450e057b21d1e5531a9eb0f861c1cdca3789489e9e",
+          "outcome": "success"
+        },
+        {
+          "step": "forward_to_foreign_authority",
+          "state": "forwarded_to_foreign_authority",
+          "transactionId": "e41991fbdaf960ab64503b45a089f99080d69cdedce67542c1e52ed41f93af84",
+          "outcome": "success"
+        },
+        {
+          "step": "record_foreign_review",
+          "state": "under_foreign_review",
+          "transactionId": "4e9a005c63d54026cd6a9f337515ca27edbb0476f2ed12448f07fa7f2677838b",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:foreign_regulator_response",
+          "documentId": "doc-5cc4eaf0-9dd3-48c9-8858-7e9ff9c27c52",
+          "transactionId": "96e96c01326de280a965d7ef70be8d4243a7b5b938095d0273fca66b57a06027",
+          "outcome": "success"
+        },
+        {
+          "step": "approve_case",
+          "state": "approved",
+          "transactionId": "1263203fd5be82d8ac2496cfc15b944bc5386177f9b878c66924f18211fa04b6",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:assurance_instrument",
+          "documentId": "doc-2f4eb469-5cb0-46e1-941b-017f30ffb9f6",
+          "transactionId": "8f7c91b15b0f2125fbf0ea1435574afa06c7ffe6455b0342bcf62b9a48376a73",
+          "outcome": "success"
+        },
+        {
+          "step": "issue_assurance",
+          "state": "issued",
+          "transactionId": "c8e03504344c0f510fe174f8f332a949c671a1385dd25c3a76cb472686ab992c",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:amendment_request_package",
+          "documentId": "doc-49a3bf04-cf2a-4bf3-9bcf-41f9332b7c11",
+          "transactionId": "2fc11ab7d582c2a48bfcc4f9310fda854ec01873efcec944f6d9777fd09ecbe8",
+          "outcome": "success"
+        },
+        {
+          "step": "initiate_non_substantive_amendment",
+          "state": "awaiting_coordination",
+          "transactionId": "1b5a2ef3ef2d912911c370c07d64475278c0b811df394030a2d4e2f57e53bcf3",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:assurance_instrument",
+          "documentId": "doc-08450264-20d6-476c-a7b2-cf4a4fafc7cd",
+          "transactionId": "11355b588d5f9f51f1a1aa5a588a838844e226f5c455dbab27e6f11543b032e1",
+          "outcome": "success"
+        },
+        {
+          "step": "amend_assurance_non_substantive",
+          "state": "amended",
+          "transactionId": "da984775cc5345357549675282553f6ea394f56a140fa8c82772bfd8a1243db6",
+          "outcome": "success"
+        }
+      ]
+    },
+    {
+      "scenarioId": "revocation",
+      "caseId": "case-567f2b4f-1113-4602-8198-2faa72600a37",
+      "terminalState": "revoked",
+      "caseStateAfterScenario": "revoked",
+      "durationMs": 39156,
+      "auditEventCount": 9,
+      "verifiedDocuments": [],
+      "metricsSummary": [
+        {
+          "metricId": "fabric_invoke_latency_ms",
+          "count": 19,
+          "min": 2025.0809000000008,
+          "max": 2034.3016000000061,
+          "average": 2028.557826315785,
+          "p50": 2028.412799999991,
+          "p95": 2034.3016000000061
+        },
+        {
+          "metricId": "transaction_success_count",
+          "count": 19,
+          "min": 1,
+          "max": 1,
+          "average": 1,
+          "p50": 1,
+          "p95": 1
+        },
+        {
+          "metricId": "case_creation_latency_ms",
+          "count": 1,
+          "min": 2037.8350999999966,
+          "max": 2037.8350999999966,
+          "average": 2037.8350999999966,
+          "p50": 2037.8350999999966,
+          "p95": 2037.8350999999966
+        },
+        {
+          "metricId": "document_anchor_latency_ms",
+          "count": 10,
+          "min": 2063.2857000000076,
+          "max": 2080.2576999999874,
+          "average": 2071.05808,
+          "p50": 2070.0621999999858,
+          "p95": 2080.2576999999874
+        },
+        {
+          "metricId": "transition_latency_ms",
+          "count": 8,
+          "min": 2032.031799999997,
+          "max": 2113.1046999999962,
+          "average": 2046.2336250000008,
+          "p50": 2037.8350999999966,
+          "p95": 2113.1046999999962
+        },
+        {
+          "metricId": "scenario_end_to_end_ms",
+          "count": 1,
+          "min": 39156,
+          "max": 39156,
+          "average": 39156,
+          "p50": 39156,
+          "p95": 39156
+        },
+        {
+          "metricId": "audit_reconstruction_ms",
+          "count": 1,
+          "min": 4.4082000000053085,
+          "max": 4.4082000000053085,
+          "average": 4.4082000000053085,
+          "p50": 4.4082000000053085,
+          "p95": 4.4082000000053085
+        }
+      ],
+      "steps": [
+        {
+          "step": "create_draft",
+          "state": "draft",
+          "transactionId": "0b53aeaa8e4fd0429332d436d0611c3a999e9cf4a0e4cc1a582c81dbd04fec72",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:assurance_application_form",
+          "documentId": "doc-f5dc7885-b236-44b8-bfa7-ff70cf37ccab",
+          "transactionId": "26a1ec131aff7bf4ece111ef9ff00069daeeeb175c858eb21c159884c491f1e6",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:item_technical_specification",
+          "documentId": "doc-a9a89cf8-f494-4cf8-830e-4cef1acfafa4",
+          "transactionId": "96e5256e06687b846a234caef59cb11d7763febbd7ebbb4b6ac82c8ddd583495",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:end_use_declaration",
+          "documentId": "doc-4c3ae242-c444-4555-82e2-7d0a352f421b",
+          "transactionId": "9acf16cc6046b4dedb18f0d2a77a37144e14b4efe3fd45ad0d7a8acc2718f11b",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:supporting_correspondence",
+          "documentId": "doc-059c3050-0606-4950-b946-2dc0cc5598d7",
+          "transactionId": "3793c6167e515ce12addb5fed76c716d2480fe630c7a1095aa495a82d6ce3a45",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:transport_authorization",
+          "documentId": "doc-3a05ad26-1507-4cef-bafa-c91bb2512bd3",
+          "transactionId": "fed390ae964fd9b07445a353f4db7cc1e84120af758063ecd062815fc1dc2c8a",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:package_design_certificate",
+          "documentId": "doc-08af1a1a-cca7-4a63-b913-0085aeb69357",
+          "transactionId": "c2dc16788ad451099f60f09879f1ec566c6d407c51ca989a7417bdfb532d057d",
+          "outcome": "success"
+        },
+        {
+          "step": "submit_case",
+          "state": "submitted",
+          "transactionId": "d17e3d997b8e1d7167ca18fdddec8d0047da4229d47bb72ff5e2c1e956d2f414",
+          "outcome": "success"
+        },
+        {
+          "step": "record_domestic_review",
+          "state": "under_domestic_review",
+          "transactionId": "8875347ce11f753f310fe117ebc638c51a2feffb4c9ccf80cd9f6b99edb49738",
+          "outcome": "success"
+        },
+        {
+          "step": "forward_to_coordination",
+          "state": "awaiting_coordination",
+          "transactionId": "f6073eba39c8a47167be2545907006f3c1c22e46e69e4a7a0af76470b0d165cc",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:coordination_forwarding_package",
+          "documentId": "doc-358cf007-5e6e-474b-b6ef-696b2913ec1c",
+          "transactionId": "9c94a3601d81fac1af5342022504af48724ded72a2eb85d2007d65cb256a3dd0",
+          "outcome": "success"
+        },
+        {
+          "step": "forward_to_foreign_authority",
+          "state": "forwarded_to_foreign_authority",
+          "transactionId": "8396c3ef50cc0f4d6aa4d86f96cec757748f682a7ffaca4b2996e4a6348ab46f",
+          "outcome": "success"
+        },
+        {
+          "step": "record_foreign_review",
+          "state": "under_foreign_review",
+          "transactionId": "eef129e3b2dd47becee5a02cafd7ec0f2ba205728019ad3eded242844a07857a",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:foreign_regulator_response",
+          "documentId": "doc-8cd22adc-1401-4dd6-9080-afd718ba856d",
+          "transactionId": "8e6777b482073dc970145c25ad8039d8a12f2f60d186091ad87c36f14632354a",
+          "outcome": "success"
+        },
+        {
+          "step": "approve_case",
+          "state": "approved",
+          "transactionId": "2ef7d9278bf6e27c72f44d76434bedc983337c5c50f5840b2b05ed38d184eda3",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:assurance_instrument",
+          "documentId": "doc-34c29743-9228-4ec3-affa-4739f441bd54",
+          "transactionId": "42ef1a393ba1f165ca47bf2d5a3430a72663235cb267893bfb818575943dc57e",
+          "outcome": "success"
+        },
+        {
+          "step": "issue_assurance",
+          "state": "issued",
+          "transactionId": "fb2aa8fdd9d14d5fa1c05746dc530370bab460498f459213754b984683a87396",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:revocation_notice",
+          "documentId": "doc-34037be5-d266-4048-8778-8893724b614b",
+          "transactionId": "5308e25f44af4b011d3e726f4c5f55b1b61750a242aab79496daf0ef5291e87c",
+          "outcome": "success"
+        },
+        {
+          "step": "revoke_assurance",
+          "state": "revoked",
+          "transactionId": "b859a5a8dee727bdf3eaef1cf64124027e6f22b4c9dfdfeaf49386bd7686d0dd",
+          "outcome": "success"
+        }
+      ]
+    },
+    {
+      "scenarioId": "unauthorized-attempt",
+      "caseId": "case-c3f9e4a1-9844-44ea-9942-e6fa43952e87",
+      "terminalState": "blocked",
+      "caseStateAfterScenario": "submitted",
+      "durationMs": 10404,
+      "auditEventCount": 2,
+      "verifiedDocuments": [],
+      "metricsSummary": [
+        {
+          "metricId": "fabric_invoke_latency_ms",
+          "count": 5,
+          "min": 2024.89479999998,
+          "max": 2035.826299999986,
+          "average": 2030.5806599999953,
+          "p50": 2030.6730000000098,
+          "p95": 2035.826299999986
+        },
+        {
+          "metricId": "transaction_success_count",
+          "count": 5,
+          "min": 1,
+          "max": 1,
+          "average": 1,
+          "p50": 1,
+          "p95": 1
+        },
+        {
+          "metricId": "case_creation_latency_ms",
+          "count": 1,
+          "min": 2036.9751000000106,
+          "max": 2036.9751000000106,
+          "average": 2036.9751000000106,
+          "p50": 2036.9751000000106,
+          "p95": 2036.9751000000106
+        },
+        {
+          "metricId": "document_anchor_latency_ms",
+          "count": 3,
+          "min": 2064.027599999972,
+          "max": 2082.7375000000175,
+          "average": 2070.7305666666653,
+          "p50": 2065.426600000006,
+          "p95": 2082.7375000000175
+        },
+        {
+          "metricId": "transition_latency_ms",
+          "count": 1,
+          "min": 2126.3708000000042,
+          "max": 2126.3708000000042,
+          "average": 2126.3708000000042,
+          "p50": 2126.3708000000042,
+          "p95": 2126.3708000000042
+        },
+        {
+          "metricId": "access_denied_count",
+          "count": 1,
+          "min": 1,
+          "max": 1,
+          "average": 1,
+          "p50": 1,
+          "p95": 1
+        },
+        {
+          "metricId": "transaction_failure_count",
+          "count": 1,
+          "min": 1,
+          "max": 1,
+          "average": 1,
+          "p50": 1,
+          "p95": 1
+        },
+        {
+          "metricId": "scenario_end_to_end_ms",
+          "count": 1,
+          "min": 10404,
+          "max": 10404,
+          "average": 10404,
+          "p50": 10404,
+          "p95": 10404
+        },
+        {
+          "metricId": "audit_reconstruction_ms",
+          "count": 1,
+          "min": 3.6805999999924097,
+          "max": 3.6805999999924097,
+          "average": 3.6805999999924097,
+          "p50": 3.6805999999924097,
+          "p95": 3.6805999999924097
+        }
+      ],
+      "steps": [
+        {
+          "step": "create_draft",
+          "state": "draft",
+          "transactionId": "693ed6888c7d50dc4503c6c0346e83b306306f60d35176a40417797d84f68d46",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:assurance_application_form",
+          "documentId": "doc-cb284066-1f80-4914-b89b-ffa1cbaeca64",
+          "transactionId": "34f80cec71ce09e4c14943b6950f7a76a8779ae723d10bc42d2d54fdf7c45f6b",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:item_technical_specification",
+          "documentId": "doc-15e8838b-af2e-4118-9298-4072296d46ad",
+          "transactionId": "4c92f12eac4ff96e4e2eb823051d8b90cbf880832ee939bd3e50676a936993cd",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:end_use_declaration",
+          "documentId": "doc-5bd56a6a-5aa4-4b23-bf0c-559da1b0dbc8",
+          "transactionId": "10547c15943bb61b75f302a4828c8286edc8859b45b80066fd12d4cc1ca18b56",
+          "outcome": "success"
+        },
+        {
+          "step": "submit_case",
+          "state": "submitted",
+          "transactionId": "0254c03c93752f591492a7f927ec170664ed7ae84f01db6e1f05e25ffe6d0630",
+          "outcome": "success"
+        },
+        {
+          "step": "unauthorized_record_domestic_review_attempt",
+          "state": "submitted",
+          "outcome": "blocked",
+          "message": "Backend request failed with 403: {\"message\":\"10 ABORTED: failed to collect enough transaction endorsements, see attached details for more info Details: DomesticNuclearRegulatorMSP: chaincode response 500, Role \\\"applicant_case_manager\\\" is not allowed to perform \\\"record_domestic_review\\\". Transition \\\"record_domestic_review\\\" does not allow role \\\"applicant_case_manager\\\" for this state. Organization type \\\"applicant_organization\\\" is not permitted for \\\"record_domestic_review\\\". | CoordinatingAuthorityMSP: chaincode response 500, Role \\\"applicant_case_manager\\\" is not allowed to perform \\\"record_domestic_review\\\". Transition \\\"record_domestic_review\\\" does not allow role \\\"applicant_case_manager\\\" for this state. Organization type \\\"applicant_organization\\\" is not permitted for \\\"record_domestic_review\\\".\",\"error\":\"Forbidden\",\"statusCode\":403}"
+        }
+      ],
+      "expectedFailure": {
+        "step": "unauthorized_record_domestic_review_attempt",
+        "message": "Backend request failed with 403: {\"message\":\"10 ABORTED: failed to collect enough transaction endorsements, see attached details for more info Details: DomesticNuclearRegulatorMSP: chaincode response 500, Role \\\"applicant_case_manager\\\" is not allowed to perform \\\"record_domestic_review\\\". Transition \\\"record_domestic_review\\\" does not allow role \\\"applicant_case_manager\\\" for this state. Organization type \\\"applicant_organization\\\" is not permitted for \\\"record_domestic_review\\\". | CoordinatingAuthorityMSP: chaincode response 500, Role \\\"applicant_case_manager\\\" is not allowed to perform \\\"record_domestic_review\\\". Transition \\\"record_domestic_review\\\" does not allow role \\\"applicant_case_manager\\\" for this state. Organization type \\\"applicant_organization\\\" is not permitted for \\\"record_domestic_review\\\".\",\"error\":\"Forbidden\",\"statusCode\":403}"
+      }
+    },
+    {
+      "scenarioId": "missing-document-path",
+      "caseId": "case-3583d968-e37a-4d5c-8a5d-837588f3f478",
+      "terminalState": "blocked",
+      "caseStateAfterScenario": "draft",
+      "durationMs": 6208,
+      "auditEventCount": 1,
+      "verifiedDocuments": [],
+      "metricsSummary": [
+        {
+          "metricId": "fabric_invoke_latency_ms",
+          "count": 3,
+          "min": 2026.936400000006,
+          "max": 2030.5852000000014,
+          "average": 2029.2801999999986,
+          "p50": 2030.3189999999886,
+          "p95": 2030.5852000000014
+        },
+        {
+          "metricId": "transaction_success_count",
+          "count": 3,
+          "min": 1,
+          "max": 1,
+          "average": 1,
+          "p50": 1,
+          "p95": 1
+        },
+        {
+          "metricId": "case_creation_latency_ms",
+          "count": 1,
+          "min": 2039.0299999999988,
+          "max": 2039.0299999999988,
+          "average": 2039.0299999999988,
+          "p50": 2039.0299999999988,
+          "p95": 2039.0299999999988
+        },
+        {
+          "metricId": "document_anchor_latency_ms",
+          "count": 2,
+          "min": 2069.948400000023,
+          "max": 2075.8291000000027,
+          "average": 2072.888750000013,
+          "p50": 2069.948400000023,
+          "p95": 2075.8291000000027
+        },
+        {
+          "metricId": "transaction_failure_count",
+          "count": 1,
+          "min": 1,
+          "max": 1,
+          "average": 1,
+          "p50": 1,
+          "p95": 1
+        },
+        {
+          "metricId": "scenario_end_to_end_ms",
+          "count": 1,
+          "min": 6208,
+          "max": 6208,
+          "average": 6208,
+          "p50": 6208,
+          "p95": 6208
+        },
+        {
+          "metricId": "audit_reconstruction_ms",
+          "count": 1,
+          "min": 3.5323999999964144,
+          "max": 3.5323999999964144,
+          "average": 3.5323999999964144,
+          "p50": 3.5323999999964144,
+          "p95": 3.5323999999964144
+        }
+      ],
+      "steps": [
+        {
+          "step": "create_draft",
+          "state": "draft",
+          "transactionId": "b515a22c436f314489a610f92d6a50a0d02ce53f605aead682fc282e3da02b33",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:assurance_application_form",
+          "documentId": "doc-e194382a-58b9-40a4-9e94-8aa1e9f40e31",
+          "transactionId": "a4dadbdd709f89aa35053c600eaf2656f82abc232d55251ebf93e5a97f0153a4",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:item_technical_specification",
+          "documentId": "doc-0e451c36-ffa1-41fc-b5f4-3c0bba0371ff",
+          "transactionId": "d6de29eb5b6fef8c0436b9c68ec53d7f5c4d6549804f919813e3425cda5341e0",
+          "outcome": "success"
+        },
+        {
+          "step": "submit_case_missing_document_bundle",
+          "state": "draft",
+          "outcome": "blocked",
+          "message": "Backend request failed with 400: {\"message\":\"10 ABORTED: failed to collect enough transaction endorsements, see attached details for more info Details: DomesticNuclearRegulatorMSP: chaincode response 500, Missing required document types: assurance_application_form, item_technical_specification, end_use_declaration. | CoordinatingAuthorityMSP: chaincode response 500, Missing required document types: assurance_application_form, item_technical_specification, end_use_declaration.\",\"error\":\"Bad Request\",\"statusCode\":400}"
+        }
+      ],
+      "expectedFailure": {
+        "step": "submit_case_missing_document_bundle",
+        "message": "Backend request failed with 400: {\"message\":\"10 ABORTED: failed to collect enough transaction endorsements, see attached details for more info Details: DomesticNuclearRegulatorMSP: chaincode response 500, Missing required document types: assurance_application_form, item_technical_specification, end_use_declaration. | CoordinatingAuthorityMSP: chaincode response 500, Missing required document types: assurance_application_form, item_technical_specification, end_use_declaration.\",\"error\":\"Bad Request\",\"statusCode\":400}"
+      }
+    },
+    {
+      "scenarioId": "invalid-transition-attempt",
+      "caseId": "case-ee69773a-9c55-43b3-9158-7e052c7420f6",
+      "terminalState": "blocked",
+      "caseStateAfterScenario": "under_domestic_review",
+      "durationMs": 12423,
+      "auditEventCount": 3,
+      "verifiedDocuments": [],
+      "metricsSummary": [
+        {
+          "metricId": "fabric_invoke_latency_ms",
+          "count": 6,
+          "min": 2029.2399999999907,
+          "max": 2040.8156000000017,
+          "average": 2031.4338333333337,
+          "p50": 2029.4530000000086,
+          "p95": 2040.8156000000017
+        },
+        {
+          "metricId": "transaction_success_count",
+          "count": 6,
+          "min": 1,
+          "max": 1,
+          "average": 1,
+          "p50": 1,
+          "p95": 1
+        },
+        {
+          "metricId": "case_creation_latency_ms",
+          "count": 1,
+          "min": 2042.5206999999937,
+          "max": 2042.5206999999937,
+          "average": 2042.5206999999937,
+          "p50": 2042.5206999999937,
+          "p95": 2042.5206999999937
+        },
+        {
+          "metricId": "document_anchor_latency_ms",
+          "count": 3,
+          "min": 2072.8010999999824,
+          "max": 2080.113799999992,
+          "average": 2075.83679999999,
+          "p50": 2074.595499999996,
+          "p95": 2080.113799999992
+        },
+        {
+          "metricId": "transition_latency_ms",
+          "count": 2,
+          "min": 2036.3355999999912,
+          "max": 2091.578999999998,
+          "average": 2063.9572999999946,
+          "p50": 2036.3355999999912,
+          "p95": 2091.578999999998
+        },
+        {
+          "metricId": "transaction_failure_count",
+          "count": 1,
+          "min": 1,
+          "max": 1,
+          "average": 1,
+          "p50": 1,
+          "p95": 1
+        },
+        {
+          "metricId": "scenario_end_to_end_ms",
+          "count": 1,
+          "min": 12423,
+          "max": 12423,
+          "average": 12423,
+          "p50": 12423,
+          "p95": 12423
+        },
+        {
+          "metricId": "audit_reconstruction_ms",
+          "count": 1,
+          "min": 3.038699999975506,
+          "max": 3.038699999975506,
+          "average": 3.038699999975506,
+          "p50": 3.038699999975506,
+          "p95": 3.038699999975506
+        }
+      ],
+      "steps": [
+        {
+          "step": "create_draft",
+          "state": "draft",
+          "transactionId": "66e7656b38d501b83bb0571bdb4ca2c578cb1536ebfb2ffd1e7fe5824b6fe2ac",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:assurance_application_form",
+          "documentId": "doc-e8df8221-59be-4e2b-bc36-94b011cf98b6",
+          "transactionId": "e122107e13c9b1b586207ca40201072fe61bb1379670481f8ddefb110c28a047",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:item_technical_specification",
+          "documentId": "doc-85d5e721-cb72-4661-aeb9-a787ded2ad91",
+          "transactionId": "3bc7f82b215635b4ef0d0cf8eaa1db92108195f6883f87761a4bf6b07aaadb8d",
+          "outcome": "success"
+        },
+        {
+          "step": "upload:end_use_declaration",
+          "documentId": "doc-33b435b0-fd5d-4d74-821e-54735360276e",
+          "transactionId": "5d55c5f5bb70ec9e55b0586e6e63739ea0832ae0b290f2a2a3ae9eea67b91bf3",
+          "outcome": "success"
+        },
+        {
+          "step": "submit_case",
+          "state": "submitted",
+          "transactionId": "f77068e80df9f2d80e6ceabb3da1065bca1aa92f053789b1952083b5e83267e7",
+          "outcome": "success"
+        },
+        {
+          "step": "record_domestic_review",
+          "state": "under_domestic_review",
+          "transactionId": "fe0f56b170c3f8be3d641d84f825e63eee1ca3b4a4922b77d5fb26fcc8956e19",
+          "outcome": "success"
+        },
+        {
+          "step": "forward_to_foreign_authority_invalid_state",
+          "state": "under_domestic_review",
+          "outcome": "blocked",
+          "message": "Backend request failed with 400: {\"message\":\"10 ABORTED: failed to collect enough transaction endorsements, see attached details for more info Details: CoordinatingAuthorityMSP: chaincode response 500, No transition is defined for action \\\"forward_to_foreign_authority\\\" from state \\\"under_domestic_review\\\". | ForeignNuclearRegulatorMSP: chaincode response 500, No transition is defined for action \\\"forward_to_foreign_authority\\\" from state \\\"under_domestic_review\\\".\",\"error\":\"Bad Request\",\"statusCode\":400}"
+        }
+      ],
+      "expectedFailure": {
+        "step": "forward_to_foreign_authority_invalid_state",
+        "message": "Backend request failed with 400: {\"message\":\"10 ABORTED: failed to collect enough transaction endorsements, see attached details for more info Details: CoordinatingAuthorityMSP: chaincode response 500, No transition is defined for action \\\"forward_to_foreign_authority\\\" from state \\\"under_domestic_review\\\". | ForeignNuclearRegulatorMSP: chaincode response 500, No transition is defined for action \\\"forward_to_foreign_authority\\\" from state \\\"under_domestic_review\\\".\",\"error\":\"Bad Request\",\"statusCode\":400}"
+      }
+    }
+  ],
+  "errors": []
+}

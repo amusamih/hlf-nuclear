@@ -54,6 +54,9 @@ The current implementation covers:
 - `evaluation/caliper`
   Hyperledger Caliper benchmarks for ledger-oriented latency and throughput testing.
 
+- `evaluation/companion-evidence`
+  Tracked paper-support validation artifacts such as blocked-path evidence and interoperability traces.
+
 ## Local Runtime Model
 
 The prototype runs as a local multi-service environment:
@@ -177,12 +180,17 @@ npm run bench:create-case --workspace @prototype/caliper
 npm run bench:workflow:smoke --workspace @prototype/caliper
 npm run bench:workflow --workspace @prototype/caliper
 npm run bench:workflow:paper --workspace @prototype/caliper
+npm run bench:workflow:rate-sweep --workspace @prototype/caliper
 ```
 
 Caliper network configuration and workload modules are under:
 
 - `evaluation/caliper/networks`
 - `evaluation/caliper/workloads`
+
+Companion evidence referenced by the paper is tracked under:
+
+- `evaluation/companion-evidence`
 
 ## Persistence and Trust Boundaries
 

@@ -1,0 +1,165 @@
+{
+  "caseId": "case-712595b3-cd8b-43cd-8650-0be20f329353",
+  "correlationId": "interop-1774408572706",
+  "terminalState": "issued",
+  "intakeStatus": "submitted",
+  "foreignOutbound": {
+    "messageId": "msg-f024f926-4554-486b-bdeb-d24158f3c8ca",
+    "schemaVersion": "v1",
+    "timestamp": "2026-03-25T03:16:32.344Z",
+    "correlationId": "case-712595b3-cd8b-43cd-8650-0be20f329353:foreign-forward",
+    "caseId": "case-712595b3-cd8b-43cd-8650-0be20f329353",
+    "originatingAuthority": "coordinating_authority",
+    "destinationAuthority": "foreign_nuclear_regulator",
+    "caseSummary": {
+      "caseNumber": "NRA-2026-0401",
+      "itemCategory": "fresh_fuel_component",
+      "quantity": 2,
+      "originJurisdiction": "Jurisdiction-A",
+      "destinationJurisdiction": "Jurisdiction-B",
+      "intendedUse": "peaceful_nuclear_power_generation"
+    },
+    "documentManifest": [
+      {
+        "documentId": "doc-2a356b58-2e8d-401c-bc4e-73d89b9f9ae9",
+        "documentType": "coordination_forwarding_package",
+        "fileName": "coordination-forwarding.txt",
+        "mimeType": "text/plain",
+        "classification": "restricted",
+        "accessScope": [
+          "domestic_regulator",
+          "coordinating_authority",
+          "foreign_regulator",
+          "auditor_body"
+        ],
+        "sha256Hash": "bbedae7acc6fb981f14afe9ab03e5a25b066a476b27ede0d5c96fb5208b44ee7"
+      }
+    ],
+    "responseDueAt": "2026-04-01T03:16:32.344Z"
+  },
+  "foreignAcknowledgementState": "under_foreign_review",
+  "foreignDecisionState": "approved",
+  "statusSync": {
+    "messageId": "msg-ad34b57c-13a0-4f08-a949-efccb8efd7aa",
+    "schemaVersion": "v1",
+    "timestamp": "2026-03-25T03:16:42.689Z",
+    "correlationId": "case-712595b3-cd8b-43cd-8650-0be20f329353:domestic-status-sync",
+    "caseId": "case-712595b3-cd8b-43cd-8650-0be20f329353",
+    "externalCaseRef": "domestic-interop-001",
+    "state": "issued",
+    "reasonCode": null
+  },
+  "exchangeSummary": {
+    "totalExchanges": 6,
+    "bySimulator": {
+      "domestic_emulator": 3,
+      "foreign_simulator": 3
+    },
+    "byStatus": {
+      "applied": 3,
+      "generated": 3
+    },
+    "byMessageType": {
+      "domestic_intake": 1,
+      "domestic_status_sync": 2,
+      "foreign_forwarding": 1,
+      "foreign_acknowledgement": 1,
+      "foreign_decision": 1
+    }
+  },
+  "exchangeCount": 6,
+  "auditEventCount": 8,
+  "metricsSummary": [
+    {
+      "metricId": "fabric_invoke_latency_ms",
+      "count": 14,
+      "min": 2034.3682999999983,
+      "max": 2664.0883999999996,
+      "average": 2102.0565642857136,
+      "p50": 2046.2668000000012,
+      "p95": 2664.0883999999996
+    },
+    {
+      "metricId": "transaction_success_count",
+      "count": 14,
+      "min": 1,
+      "max": 1,
+      "average": 1,
+      "p50": 1,
+      "p95": 1
+    },
+    {
+      "metricId": "case_creation_latency_ms",
+      "count": 1,
+      "min": 2739.5387,
+      "max": 2739.5387,
+      "average": 2739.5387,
+      "p50": 2739.5387,
+      "p95": 2739.5387
+    },
+    {
+      "metricId": "document_anchor_latency_ms",
+      "count": 6,
+      "min": 2075.7615000000005,
+      "max": 2153.3203999999996,
+      "average": 2099.035816666666,
+      "p50": 2082.5396999999994,
+      "p95": 2153.3203999999996
+    },
+    {
+      "metricId": "transition_latency_ms",
+      "count": 7,
+      "min": 2040.2736000000004,
+      "max": 2165.816500000001,
+      "average": 2074.739157142857,
+      "p50": 2065.2006999999994,
+      "p95": 2165.816500000001
+    },
+    {
+      "metricId": "domestic_intake_latency_ms",
+      "count": 1,
+      "min": 11137.8433,
+      "max": 11137.8433,
+      "average": 11137.8433,
+      "p50": 11137.8433,
+      "p95": 11137.8433
+    },
+    {
+      "metricId": "integration_exchange_success_count",
+      "count": 5,
+      "min": 1,
+      "max": 1,
+      "average": 1,
+      "p50": 1,
+      "p95": 1
+    },
+    {
+      "metricId": "foreign_simulator_exchange_latency_ms",
+      "count": 2,
+      "min": 2081.568900000002,
+      "max": 4128.533599999999,
+      "average": 3105.0512500000004,
+      "p50": 2081.568900000002,
+      "p95": 4128.533599999999
+    },
+    {
+      "metricId": "status_sync_generation_ms",
+      "count": 1,
+      "min": 1.3152000000009139,
+      "max": 1.3152000000009139,
+      "average": 1.3152000000009139,
+      "p50": 1.3152000000009139,
+      "p95": 1.3152000000009139
+    },
+    {
+      "metricId": "audit_reconstruction_ms",
+      "count": 1,
+      "min": 5.325000000000728,
+      "max": 5.325000000000728,
+      "average": 5.325000000000728,
+      "p50": 5.325000000000728,
+      "p95": 5.325000000000728
+    }
+  ],
+  "issuedDocumentVerified": true
+}

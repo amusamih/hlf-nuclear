@@ -1,101 +1,89 @@
-# Fabric Integration Notes
+# Fabric Sandbox
 
-This folder now contains the runnable Hyperledger Fabric dev-network assets for the first-paper sandbox, along with the gateway configuration expected by the backend and Caliper.
+This folder contains the source configuration and scripts for the local Hyperledger Fabric
+network used by the prototype.
 
-## Paper-1 network shape
+It is a single-machine development sandbox, but it preserves the logical consortium shape
+used by the implementation:
 
-- `1` orderer org with `1` orderer
-- `3` member orgs:
+- `1` orderer organization with `1` orderer
+- `3` member organizations:
   - `DomesticNuclearRegulatorMSP`
   - `CoordinatingAuthorityMSP`
   - `ForeignNuclearRegulatorMSP`
-- `1` peer per member org
-- `1` main channel:
+- `1` peer per member organization
+- `1` application channel:
   - `regulatory-workflow-channel`
 - `1` chaincode package:
   - `nuclear-assurance`
 
-## Contract surface expected by the backend
+## What is tracked here
 
-The backend relay layer now maps its write operations directly to these contract names and transaction names:
+Tracked source assets:
 
-- `CaseContract`
-  - `createCase`
-  - `submitCase`
-  - `recordDomesticReview`
-  - `requestMoreInformation`
-  - `respondToInformationRequest`
-  - `forwardToCoordination`
-  - `forwardToForeignAuthority`
-  - `recordForeignReview`
-  - `approveCase`
-  - `rejectCase`
-  - `issueAssurance`
-  - `initiateNonSubstantiveAmendment`
-  - `initiateSubstantiveAmendment`
-  - `amendAssurance`
-  - `rejectAmendment`
-  - `revokeAssurance`
-  - `closeCase`
-- `DocumentContract`
-  - `addDocumentReference`
-  - `updateDocumentVersion`
-  - `deactivateDocument`
-  - `getDocumentReference`
-  - `listCaseDocuments`
-  - `listActiveCaseDocuments`
+- `config/crypto-config.yaml`
+- `config/configtx.yaml`
+- `docker/docker-compose.fabric.yaml`
+- `scripts/up-network.ps1`
+- `scripts/down-network.ps1`
 
-## Gateway model
+Generated runtime artifacts are intentionally not tracked:
 
-Applicant-originated actions remain off-ledger and are relayed through a regulator-controlled gateway identity:
+- `organizations/`
+- `channel-artifacts/`
+- `connection-profiles/`
+- `state/`
 
-- applicant and domestic actions:
-  - backend uses `DomesticNuclearRegulatorMSP`
-- coordination actions:
-  - backend uses `CoordinatingAuthorityMSP`
-- foreign actions:
-  - backend uses `ForeignNuclearRegulatorMSP`
+These directories are recreated locally when the sandbox is started.
 
-This keeps the prototype compatible in principle with a real Fabric gateway setup without making applicant users network members.
+## Network lifecycle
 
-## Runtime inputs used by the backend
+Bring the sandbox up from the repository root with:
 
-The backend supports two modes:
+- `npm run fabric:up`
 
-- `FABRIC_MODE=simulated`
-  - keeps the original local relay behavior
-- `FABRIC_MODE=real`
-  - uses the generated gateway connection profiles under `infra/fabric/connection-profiles`
+Tear it down with:
 
-Optional overrides:
+- `npm run fabric:down`
 
-- `FABRIC_CHANNEL_NAME`
-- `FABRIC_CHAINCODE_NAME`
-- `FABRIC_CONNECTION_PROFILE_DOMESTIC`
-- `FABRIC_CONNECTION_PROFILE_COORDINATION`
-- `FABRIC_CONNECTION_PROFILE_FOREIGN`
+`up-network.ps1` performs the full local setup:
 
-## Local run order
+1. generates crypto material with `cryptogen`
+2. generates genesis/channel artifacts with `configtxgen`
+3. starts the orderer and peers with Docker Compose
+4. creates and joins `regulatory-workflow-channel`
+5. installs, approves, and commits the `nuclear-assurance` chaincode
+6. writes gateway connection profiles for the backend and Caliper
 
-1. Build the shared package and chaincode bundle.
-2. Run `npm run fabric:up`.
-3. Start the backend with `FABRIC_MODE=real`.
-4. Run the scenario runner and Caliper against the live sandbox.
+`down-network.ps1` stops the containers and removes the generated runtime artifacts.
 
-The `up-network.ps1` script generates:
+## Chaincode and channel settings
 
-- crypto material under `infra/fabric/organizations`
-- channel artifacts under `infra/fabric/channel-artifacts`
-- connection profiles under `infra/fabric/connection-profiles`
-- local peer/orderer state under `infra/fabric/state`
+- Channel name: `regulatory-workflow-channel`
+- Chaincode name: `nuclear-assurance`
+- Chaincode version: `0.1.0`
+- Signature policy:
+  - `OutOf(2, 'DomesticNuclearRegulatorMSP.peer', 'CoordinatingAuthorityMSP.peer', 'ForeignNuclearRegulatorMSP.peer')`
 
-## Endorsement intent
+The backend invocation planner uses this consortium model to route actions through the
+appropriate organization identities for domestic, coordination, and foreign-side steps.
 
-The backend invocation planner already tags each write with the paper-1 endorsement lane so a real gateway implementation can later translate it into state-based endorsement or explicit endorsement selection logic:
+## Gateway usage
 
-- domestic/coordinating lane:
-  - `DomesticNuclearRegulatorMSP`
-  - `CoordinatingAuthorityMSP`
-- coordination/foreign lane:
-  - `CoordinatingAuthorityMSP`
-  - `ForeignNuclearRegulatorMSP`
+When the backend runs with `FABRIC_MODE=real`, it uses the generated gateway connection
+profiles under `infra/fabric/connection-profiles`.
+
+The local admin identities are used as gateway clients for the prototype:
+
+- domestic-side actions -> `DomesticNuclearRegulatorMSP`
+- coordination actions -> `CoordinatingAuthorityMSP`
+- foreign-side actions -> `ForeignNuclearRegulatorMSP`
+
+Applicants remain off-ledger and are represented through application-layer actions rather
+than as Fabric member identities.
+
+## Notes
+
+- This sandbox does **not** run a separate Fabric CA service.
+  Identity material is generated locally for the development environment.
+- This sandbox is intended for reproducible local execution and evaluation, not production deployment.
