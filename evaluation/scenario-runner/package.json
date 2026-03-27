@@ -1,0 +1,16 @@
+{
+  "name": "@prototype/scenario-runner",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "run": "node dist/index.js",
+    "screenshot-pack": "node dist/screenshot-pack.js",
+    "lint": "node -e \"console.log('scenario-runner: no linter configured yet')\"",
+    "test": "node -e \"console.log('scenario-runner: no tests configured yet')\""
+  },
+  "dependencies": {
+    "@prototype/shared": "0.1.0"
+  }
+}

@@ -1,0 +1,477 @@
+test:
+  name: workflow-rate-sweep-benchmark
+  description: >
+    Fixed-rate send-rate sweep for representative document and workflow operations
+    in the cross-border nuclear assurance prototype.
+  workers:
+    type: local
+    number: 2
+  rounds:
+    - label: add-document-reference-1tps
+      description: Rate-sweep round for document anchoring at 1 TPS.
+      txNumber: 10
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 1
+      workload:
+        module: workloads/document-anchor.js
+        arguments:
+          contractId: DocumentContract
+          contractFunction: "DocumentContract:addDocumentReference"
+          seedNamespace: benchsweep3
+          seedCasePattern: "{ns}-anchor-case-{n}"
+          documentIdPattern: "{ns}-doc-anchor-{n}"
+          startIndex: 1
+          indexWidth: 4
+          actorRole: coordination_officer
+          actorOrgId: coordination-authority-benchmark
+          actorOrgType: coordinating_authority
+          documentType: coordination_forwarding_package
+
+    - label: add-document-reference-2tps
+      description: Rate-sweep round for document anchoring at 2 TPS.
+      txNumber: 10
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 2
+      workload:
+        module: workloads/document-anchor.js
+        arguments:
+          contractId: DocumentContract
+          contractFunction: "DocumentContract:addDocumentReference"
+          seedNamespace: benchsweep3
+          seedCasePattern: "{ns}-anchor-case-{n}"
+          documentIdPattern: "{ns}-doc-anchor-{n}"
+          startIndex: 11
+          indexWidth: 4
+          actorRole: coordination_officer
+          actorOrgId: coordination-authority-benchmark
+          actorOrgType: coordinating_authority
+          documentType: coordination_forwarding_package
+
+    - label: add-document-reference-3tps
+      description: Rate-sweep round for document anchoring at 3 TPS.
+      txNumber: 10
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 3
+      workload:
+        module: workloads/document-anchor.js
+        arguments:
+          contractId: DocumentContract
+          contractFunction: "DocumentContract:addDocumentReference"
+          seedNamespace: benchsweep3
+          seedCasePattern: "{ns}-anchor-case-{n}"
+          documentIdPattern: "{ns}-doc-anchor-{n}"
+          startIndex: 21
+          indexWidth: 4
+          actorRole: coordination_officer
+          actorOrgId: coordination-authority-benchmark
+          actorOrgType: coordinating_authority
+          documentType: coordination_forwarding_package
+
+    - label: add-document-reference-4tps
+      description: Rate-sweep round for document anchoring at 4 TPS.
+      txNumber: 10
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 4
+      workload:
+        module: workloads/document-anchor.js
+        arguments:
+          contractId: DocumentContract
+          contractFunction: "DocumentContract:addDocumentReference"
+          seedNamespace: benchsweep3
+          seedCasePattern: "{ns}-anchor-case-{n}"
+          documentIdPattern: "{ns}-doc-anchor-{n}"
+          startIndex: 31
+          indexWidth: 4
+          actorRole: coordination_officer
+          actorOrgId: coordination-authority-benchmark
+          actorOrgType: coordinating_authority
+          documentType: coordination_forwarding_package
+
+    - label: add-document-reference-5tps
+      description: Rate-sweep round for document anchoring at 5 TPS.
+      txNumber: 10
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 5
+      workload:
+        module: workloads/document-anchor.js
+        arguments:
+          contractId: DocumentContract
+          contractFunction: "DocumentContract:addDocumentReference"
+          seedNamespace: benchsweep3
+          seedCasePattern: "{ns}-anchor-case-{n}"
+          documentIdPattern: "{ns}-doc-anchor-{n}"
+          startIndex: 41
+          indexWidth: 4
+          actorRole: coordination_officer
+          actorOrgId: coordination-authority-benchmark
+          actorOrgType: coordinating_authority
+          documentType: coordination_forwarding_package
+
+    - label: add-document-reference-6tps
+      description: Rate-sweep round for document anchoring at 6 TPS.
+      txNumber: 10
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 6
+      workload:
+        module: workloads/document-anchor.js
+        arguments:
+          contractId: DocumentContract
+          contractFunction: "DocumentContract:addDocumentReference"
+          seedNamespace: benchsweep3
+          seedCasePattern: "{ns}-anchor-case-{n}"
+          documentIdPattern: "{ns}-doc-anchor-{n}"
+          startIndex: 51
+          indexWidth: 4
+          actorRole: coordination_officer
+          actorOrgId: coordination-authority-benchmark
+          actorOrgType: coordinating_authority
+          documentType: coordination_forwarding_package
+
+    - label: add-document-reference-8tps
+      description: Rate-sweep round for document anchoring at 8 TPS.
+      txNumber: 10
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 8
+      workload:
+        module: workloads/document-anchor.js
+        arguments:
+          contractId: DocumentContract
+          contractFunction: "DocumentContract:addDocumentReference"
+          seedNamespace: benchsweep3
+          seedCasePattern: "{ns}-anchor-case-{n}"
+          documentIdPattern: "{ns}-doc-anchor-{n}"
+          startIndex: 61
+          indexWidth: 4
+          actorRole: coordination_officer
+          actorOrgId: coordination-authority-benchmark
+          actorOrgType: coordinating_authority
+          documentType: coordination_forwarding_package
+
+    - label: submit-case-1tps
+      description: Rate-sweep round for case submission at 1 TPS.
+      txNumber: 10
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 1
+      workload:
+        module: workloads/transition-state.js
+        arguments:
+          contractId: CaseContract
+          contractFunction: submitCase
+          mode: documented
+          seedNamespace: benchsweep3
+          seedCasePattern: "{ns}-draft-case-{n}"
+          startIndex: 1
+          indexWidth: 4
+          actorRole: applicant_case_manager
+          actorOrgId: applicant-org-benchmark
+          actorOrgType: applicant_organization
+          documentTypes:
+            - assurance_application_form
+            - item_technical_specification
+            - end_use_declaration
+          relatedDocumentPatterns:
+            - "{ns}-doc-app-form-{n}"
+            - "{ns}-doc-spec-{n}"
+            - "{ns}-doc-enduse-{n}"
+          justification: Rate-sweep benchmark submission of a complete case.
+
+    - label: submit-case-2tps
+      description: Rate-sweep round for case submission at 2 TPS.
+      txNumber: 10
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 2
+      workload:
+        module: workloads/transition-state.js
+        arguments:
+          contractId: CaseContract
+          contractFunction: submitCase
+          mode: documented
+          seedNamespace: benchsweep3
+          seedCasePattern: "{ns}-draft-case-{n}"
+          startIndex: 11
+          indexWidth: 4
+          actorRole: applicant_case_manager
+          actorOrgId: applicant-org-benchmark
+          actorOrgType: applicant_organization
+          documentTypes:
+            - assurance_application_form
+            - item_technical_specification
+            - end_use_declaration
+          relatedDocumentPatterns:
+            - "{ns}-doc-app-form-{n}"
+            - "{ns}-doc-spec-{n}"
+            - "{ns}-doc-enduse-{n}"
+          justification: Rate-sweep benchmark submission of a complete case.
+
+    - label: submit-case-3tps
+      description: Rate-sweep round for case submission at 3 TPS.
+      txNumber: 10
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 3
+      workload:
+        module: workloads/transition-state.js
+        arguments:
+          contractId: CaseContract
+          contractFunction: submitCase
+          mode: documented
+          seedNamespace: benchsweep3
+          seedCasePattern: "{ns}-draft-case-{n}"
+          startIndex: 21
+          indexWidth: 4
+          actorRole: applicant_case_manager
+          actorOrgId: applicant-org-benchmark
+          actorOrgType: applicant_organization
+          documentTypes:
+            - assurance_application_form
+            - item_technical_specification
+            - end_use_declaration
+          relatedDocumentPatterns:
+            - "{ns}-doc-app-form-{n}"
+            - "{ns}-doc-spec-{n}"
+            - "{ns}-doc-enduse-{n}"
+          justification: Rate-sweep benchmark submission of a complete case.
+
+    - label: submit-case-4tps
+      description: Rate-sweep round for case submission at 4 TPS.
+      txNumber: 10
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 4
+      workload:
+        module: workloads/transition-state.js
+        arguments:
+          contractId: CaseContract
+          contractFunction: submitCase
+          mode: documented
+          seedNamespace: benchsweep3
+          seedCasePattern: "{ns}-draft-case-{n}"
+          startIndex: 31
+          indexWidth: 4
+          actorRole: applicant_case_manager
+          actorOrgId: applicant-org-benchmark
+          actorOrgType: applicant_organization
+          documentTypes:
+            - assurance_application_form
+            - item_technical_specification
+            - end_use_declaration
+          relatedDocumentPatterns:
+            - "{ns}-doc-app-form-{n}"
+            - "{ns}-doc-spec-{n}"
+            - "{ns}-doc-enduse-{n}"
+          justification: Rate-sweep benchmark submission of a complete case.
+
+    - label: submit-case-5tps
+      description: Rate-sweep round for case submission at 5 TPS.
+      txNumber: 10
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 5
+      workload:
+        module: workloads/transition-state.js
+        arguments:
+          contractId: CaseContract
+          contractFunction: submitCase
+          mode: documented
+          seedNamespace: benchsweep3
+          seedCasePattern: "{ns}-draft-case-{n}"
+          startIndex: 41
+          indexWidth: 4
+          actorRole: applicant_case_manager
+          actorOrgId: applicant-org-benchmark
+          actorOrgType: applicant_organization
+          documentTypes:
+            - assurance_application_form
+            - item_technical_specification
+            - end_use_declaration
+          relatedDocumentPatterns:
+            - "{ns}-doc-app-form-{n}"
+            - "{ns}-doc-spec-{n}"
+            - "{ns}-doc-enduse-{n}"
+          justification: Rate-sweep benchmark submission of a complete case.
+
+    - label: submit-case-6tps
+      description: Rate-sweep round for case submission at 6 TPS.
+      txNumber: 10
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 6
+      workload:
+        module: workloads/transition-state.js
+        arguments:
+          contractId: CaseContract
+          contractFunction: submitCase
+          mode: documented
+          seedNamespace: benchsweep3
+          seedCasePattern: "{ns}-draft-case-{n}"
+          startIndex: 51
+          indexWidth: 4
+          actorRole: applicant_case_manager
+          actorOrgId: applicant-org-benchmark
+          actorOrgType: applicant_organization
+          documentTypes:
+            - assurance_application_form
+            - item_technical_specification
+            - end_use_declaration
+          relatedDocumentPatterns:
+            - "{ns}-doc-app-form-{n}"
+            - "{ns}-doc-spec-{n}"
+            - "{ns}-doc-enduse-{n}"
+          justification: Rate-sweep benchmark submission of a complete case.
+
+    - label: submit-case-8tps
+      description: Rate-sweep round for case submission at 8 TPS.
+      txNumber: 10
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 8
+      workload:
+        module: workloads/transition-state.js
+        arguments:
+          contractId: CaseContract
+          contractFunction: submitCase
+          mode: documented
+          seedNamespace: benchsweep3
+          seedCasePattern: "{ns}-draft-case-{n}"
+          startIndex: 61
+          indexWidth: 4
+          actorRole: applicant_case_manager
+          actorOrgId: applicant-org-benchmark
+          actorOrgType: applicant_organization
+          documentTypes:
+            - assurance_application_form
+            - item_technical_specification
+            - end_use_declaration
+          relatedDocumentPatterns:
+            - "{ns}-doc-app-form-{n}"
+            - "{ns}-doc-spec-{n}"
+            - "{ns}-doc-enduse-{n}"
+          justification: Rate-sweep benchmark submission of a complete case.
+
+    - label: create-case-1tps
+      description: Rate-sweep round for draft case creation at 1 TPS.
+      txNumber: 10
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 1
+      workload:
+        module: workloads/create-case.js
+        arguments:
+          contractId: CaseContract
+          actorRole: applicant_case_manager
+          actorOrgId: applicant-org-benchmark
+          actorOrgType: applicant_organization
+
+    - label: create-case-2tps
+      description: Rate-sweep round for draft case creation at 2 TPS.
+      txNumber: 10
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 2
+      workload:
+        module: workloads/create-case.js
+        arguments:
+          contractId: CaseContract
+          actorRole: applicant_case_manager
+          actorOrgId: applicant-org-benchmark
+          actorOrgType: applicant_organization
+
+    - label: create-case-3tps
+      description: Rate-sweep round for draft case creation at 3 TPS.
+      txNumber: 10
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 3
+      workload:
+        module: workloads/create-case.js
+        arguments:
+          contractId: CaseContract
+          actorRole: applicant_case_manager
+          actorOrgId: applicant-org-benchmark
+          actorOrgType: applicant_organization
+
+    - label: create-case-4tps
+      description: Rate-sweep round for draft case creation at 4 TPS.
+      txNumber: 10
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 4
+      workload:
+        module: workloads/create-case.js
+        arguments:
+          contractId: CaseContract
+          actorRole: applicant_case_manager
+          actorOrgId: applicant-org-benchmark
+          actorOrgType: applicant_organization
+
+    - label: create-case-5tps
+      description: Rate-sweep round for draft case creation at 5 TPS.
+      txNumber: 10
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 5
+      workload:
+        module: workloads/create-case.js
+        arguments:
+          contractId: CaseContract
+          actorRole: applicant_case_manager
+          actorOrgId: applicant-org-benchmark
+          actorOrgType: applicant_organization
+
+    - label: create-case-6tps
+      description: Rate-sweep round for draft case creation at 6 TPS.
+      txNumber: 10
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 6
+      workload:
+        module: workloads/create-case.js
+        arguments:
+          contractId: CaseContract
+          actorRole: applicant_case_manager
+          actorOrgId: applicant-org-benchmark
+          actorOrgType: applicant_organization
+
+    - label: create-case-8tps
+      description: Rate-sweep round for draft case creation at 8 TPS.
+      txNumber: 10
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 8
+      workload:
+        module: workloads/create-case.js
+        arguments:
+          contractId: CaseContract
+          actorRole: applicant_case_manager
+          actorOrgId: applicant-org-benchmark
+          actorOrgType: applicant_organization

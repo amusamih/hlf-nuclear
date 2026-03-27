@@ -1,0 +1,29 @@
+{
+  "name": "@prototype/backend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/main.js",
+    "start:dev": "node --watch dist/main.js",
+    "seed:benchmark": "node dist/scripts/seed-benchmark-data.js",
+    "lint": "node -e \"console.log('backend: no linter configured yet')\"",
+    "test": "node -e \"console.log('backend: no tests configured yet')\""
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.12.5",
+    "@hyperledger/fabric-gateway": "^1.7.0",
+    "@nestjs/common": "^10.0.0",
+    "@nestjs/core": "^10.0.0",
+    "@nestjs/platform-express": "^10.0.0",
+    "@prototype/shared": "0.1.0",
+    "minio": "^8.0.6",
+    "pg": "^8.13.1",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.11.10"
+  }
+}

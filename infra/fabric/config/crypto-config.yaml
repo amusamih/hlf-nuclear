@@ -1,0 +1,31 @@
+OrdererOrgs:
+  - Name: Orderer
+    Domain: orderer.example.com
+    EnableNodeOUs: true
+    Specs:
+      - Hostname: orderer
+
+PeerOrgs:
+  - Name: DomesticNuclearRegulator
+    Domain: domestic.example.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 1
+
+  - Name: CoordinatingAuthority
+    Domain: coordination.example.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 1
+
+  - Name: ForeignNuclearRegulator
+    Domain: foreign.example.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 1

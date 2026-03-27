@@ -1,0 +1,174 @@
+test:
+  name: first-paper-workflow-benchmark
+  description: >
+    Ledger-level benchmark rounds for the sponsor-anonymous cross-border nuclear assurance workflow.
+  workers:
+    type: local
+    number: 2
+  rounds:
+    - label: create-case
+      description: Benchmark draft case creation on-ledger.
+      txNumber: 25
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 2
+      workload:
+        module: workloads/create-case.js
+        arguments:
+          contractId: CaseContract
+          actorRole: applicant_case_manager
+          actorOrgId: applicant-org-benchmark
+          actorOrgType: applicant_organization
+
+    - label: add-document-reference
+      description: Benchmark off-chain document metadata anchoring.
+      txNumber: 25
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 4
+      workload:
+        module: workloads/document-anchor.js
+        arguments:
+          contractId: DocumentContract
+          contractFunction: "DocumentContract:addDocumentReference"
+          seedNamespace: bench
+          seedCasePattern: "{ns}-anchor-case-{n}"
+          documentIdPattern: "{ns}-doc-anchor-{n}"
+          startIndex: 1
+          indexWidth: 4
+          actorRole: coordination_officer
+          actorOrgId: coordination-authority-benchmark
+          actorOrgType: coordinating_authority
+          documentType: coordination_forwarding_package
+
+    - label: update-document-version
+      description: Benchmark explicit document supersession for amended instruments.
+      txNumber: 20
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 3
+      workload:
+        module: workloads/document-version.js
+        arguments:
+          contractId: DocumentContract
+          contractFunction: "DocumentContract:updateDocumentVersion"
+          seedNamespace: bench
+          seedCasePattern: "{ns}-issued-case-{n}"
+          supersedesDocumentPattern: "{ns}-doc-assurance-instrument-v1-{n}"
+          documentIdPattern: "{ns}-doc-assurance-instrument-v2-{n}"
+          startIndex: 1
+          indexWidth: 4
+          actorRole: coordination_officer
+          actorOrgId: coordination-authority-benchmark
+          actorOrgType: coordinating_authority
+          documentType: assurance_instrument
+          version: 2
+
+    - label: submit-case
+      description: Benchmark case submission against pre-seeded draft cases.
+      txNumber: 20
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 2
+      workload:
+        module: workloads/transition-state.js
+        arguments:
+          contractId: CaseContract
+          contractFunction: submitCase
+          mode: documented
+          seedNamespace: bench
+          seedCasePattern: "{ns}-draft-case-{n}"
+          startIndex: 1
+          indexWidth: 4
+          actorRole: applicant_case_manager
+          actorOrgId: applicant-org-benchmark
+          actorOrgType: applicant_organization
+          documentTypes:
+            - assurance_application_form
+            - item_technical_specification
+            - end_use_declaration
+          relatedDocumentPatterns:
+            - "{ns}-doc-app-form-{n}"
+            - "{ns}-doc-spec-{n}"
+            - "{ns}-doc-enduse-{n}"
+          justification: Benchmark submission of a complete case.
+
+    - label: domestic-review-transition
+      description: Benchmark domestic review start on submitted cases.
+      txNumber: 20
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 3
+      workload:
+        module: workloads/transition-state.js
+        arguments:
+          contractId: CaseContract
+          contractFunction: recordDomesticReview
+          mode: simple
+          seedNamespace: bench
+          seedCasePattern: "{ns}-submitted-case-{n}"
+          startIndex: 1
+          indexWidth: 4
+          actorRole: domestic_regulator_officer
+          actorOrgId: domestic-regulator-benchmark
+          actorOrgType: domestic_regulator
+          justification: Benchmark domestic review initiation.
+
+    - label: substantive-amendment-initiation
+      description: Benchmark substantive amendment entry into renewed review.
+      txNumber: 20
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 2
+      workload:
+        module: workloads/transition-state.js
+        arguments:
+          contractId: CaseContract
+          contractFunction: initiateSubstantiveAmendment
+          mode: documented
+          seedNamespace: bench
+          seedCasePattern: "{ns}-issued-case-{n}"
+          startIndex: 1
+          indexWidth: 4
+          actorRole: domestic_regulator_officer
+          actorOrgId: domestic-regulator-benchmark
+          actorOrgType: domestic_regulator
+          documentTypes:
+            - amendment_request_package
+          relatedDocumentPatterns:
+            - "{ns}-doc-amendment-request-{n}"
+          justification: Benchmark substantive amendment initiation.
+
+    - label: amendment-finalization
+      description: Benchmark amended assurance finalization after renewed approval.
+      txNumber: 20
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 2
+      workload:
+        module: workloads/transition-state.js
+        arguments:
+          contractId: CaseContract
+          contractFunction: amendAssurance
+          mode: documented
+          seedNamespace: bench
+          seedCasePattern: "{ns}-approved-amendment-case-{n}"
+          startIndex: 1
+          indexWidth: 4
+          actorRole: coordination_officer
+          actorOrgId: coordination-authority-benchmark
+          actorOrgType: coordinating_authority
+          documentTypes:
+            - amendment_request_package
+            - assurance_instrument
+          relatedDocumentPatterns:
+            - "{ns}-doc-amendment-package-approved-{n}"
+            - "{ns}-doc-amended-instrument-{n}"
+          justification: Benchmark finalization of an amended assurance.

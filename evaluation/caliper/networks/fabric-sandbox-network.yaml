@@ -1,0 +1,51 @@
+name: nuclear-assurance-sandbox
+version: "2.0.0"
+
+caliper:
+  blockchain: fabric
+
+channels:
+  - channelName: regulatory-workflow-channel
+    contracts:
+      - id: nuclear-assurance
+        contractID: CaseContract
+      - id: nuclear-assurance
+        contractID: DocumentContract
+
+organizations:
+  - mspid: DomesticNuclearRegulatorMSP
+    identities:
+      certificates:
+        - name: domestic-gateway
+          admin: true
+          clientPrivateKey:
+            path: ../../infra/fabric/organizations/peerOrganizations/domestic.example.com/users/Admin@domestic.example.com/msp/keystore/key.pem
+          clientSignedCert:
+            path: ../../infra/fabric/organizations/peerOrganizations/domestic.example.com/users/Admin@domestic.example.com/msp/signcerts/cert.pem
+    connectionProfile:
+      path: ../../infra/fabric/connection-profiles/domestic-gateway.json
+      discover: true
+  - mspid: CoordinatingAuthorityMSP
+    identities:
+      certificates:
+        - name: coordination-gateway
+          admin: true
+          clientPrivateKey:
+            path: ../../infra/fabric/organizations/peerOrganizations/coordination.example.com/users/Admin@coordination.example.com/msp/keystore/key.pem
+          clientSignedCert:
+            path: ../../infra/fabric/organizations/peerOrganizations/coordination.example.com/users/Admin@coordination.example.com/msp/signcerts/cert.pem
+    connectionProfile:
+      path: ../../infra/fabric/connection-profiles/coordination-gateway.json
+      discover: true
+  - mspid: ForeignNuclearRegulatorMSP
+    identities:
+      certificates:
+        - name: foreign-gateway
+          admin: true
+          clientPrivateKey:
+            path: ../../infra/fabric/organizations/peerOrganizations/foreign.example.com/users/Admin@foreign.example.com/msp/keystore/key.pem
+          clientSignedCert:
+            path: ../../infra/fabric/organizations/peerOrganizations/foreign.example.com/users/Admin@foreign.example.com/msp/signcerts/cert.pem
+    connectionProfile:
+      path: ../../infra/fabric/connection-profiles/foreign-gateway.json
+      discover: true

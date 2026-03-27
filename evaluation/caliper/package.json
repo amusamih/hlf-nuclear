@@ -1,0 +1,18 @@
+{
+  "name": "@prototype/caliper",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "bench:create-case": "caliper launch manager --caliper-workspace . --caliper-benchconfig benchmarks/create-case-only.yaml --caliper-networkconfig networks/fabric-sandbox-network.yaml --caliper-flow-only-test",
+    "bench:workflow:smoke": "caliper launch manager --caliper-workspace . --caliper-benchconfig benchmarks/workflow-smoke.yaml --caliper-networkconfig networks/fabric-sandbox-network.yaml --caliper-flow-only-test",
+    "bench:workflow": "caliper launch manager --caliper-workspace . --caliper-benchconfig benchmarks/workflow-benchmark.yaml --caliper-networkconfig networks/fabric-sandbox-network.yaml --caliper-flow-only-test",
+    "bench:workflow:paper": "caliper launch manager --caliper-workspace . --caliper-benchconfig benchmarks/workflow-benchmark-paper.yaml --caliper-networkconfig networks/fabric-sandbox-network.yaml --caliper-flow-only-test"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.10.3",
+    "@hyperledger/caliper-cli": "^0.6.0",
+    "@hyperledger/caliper-core": "^0.6.0",
+    "@hyperledger/caliper-fabric": "^0.6.0",
+    "@hyperledger/fabric-gateway": "^1.5.0"
+  }
+}

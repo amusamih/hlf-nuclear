@@ -1,0 +1,22 @@
+test:
+  name: create-case-smoke
+  description: >
+    Minimal live-network Caliper benchmark used to prove end-to-end Fabric benchmarking connectivity.
+  workers:
+    type: local
+    number: 1
+  rounds:
+    - label: create-case
+      description: Benchmark on-ledger case creation against the live sandbox network.
+      txNumber: 10
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 1
+      workload:
+        module: workloads/create-case.js
+        arguments:
+          contractId: CaseContract
+          actorRole: applicant_case_manager
+          actorOrgId: applicant-org-benchmark
+          actorOrgType: applicant_organization

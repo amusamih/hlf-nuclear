@@ -1,0 +1,146 @@
+services:
+  orderer.orderer.example.com:
+    image: hyperledger/fabric-orderer:2.5
+    container_name: orderer.orderer.example.com
+    hostname: orderer.orderer.example.com
+    environment:
+      FABRIC_LOGGING_SPEC: INFO
+      ORDERER_GENERAL_LISTENADDRESS: 0.0.0.0
+      ORDERER_GENERAL_LISTENPORT: 7050
+      ORDERER_GENERAL_LOCALMSPID: OrdererMSP
+      ORDERER_GENERAL_LOCALMSPDIR: /var/hyperledger/orderer/msp
+      ORDERER_GENERAL_TLS_ENABLED: "true"
+      ORDERER_GENERAL_TLS_PRIVATEKEY: /var/hyperledger/orderer/tls/server.key
+      ORDERER_GENERAL_TLS_CERTIFICATE: /var/hyperledger/orderer/tls/server.crt
+      ORDERER_GENERAL_TLS_ROOTCAS: '[/var/hyperledger/orderer/tls/ca.crt]'
+      ORDERER_GENERAL_BOOTSTRAPMETHOD: file
+      ORDERER_GENERAL_BOOTSTRAPFILE: /var/hyperledger/orderer/genesis.block
+      ORDERER_ADMIN_LISTENADDRESS: 0.0.0.0:7053
+      ORDERER_ADMIN_TLS_ENABLED: "true"
+      ORDERER_ADMIN_TLS_CERTIFICATE: /var/hyperledger/orderer/tls/server.crt
+      ORDERER_ADMIN_TLS_PRIVATEKEY: /var/hyperledger/orderer/tls/server.key
+      ORDERER_ADMIN_TLS_ROOTCAS: '[/var/hyperledger/orderer/tls/ca.crt]'
+    working_dir: /root
+    command: orderer
+    volumes:
+      - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/genesis.block
+      - ../organizations/ordererOrganizations/orderer.example.com/orderers/orderer.orderer.example.com/msp:/var/hyperledger/orderer/msp
+      - ../organizations/ordererOrganizations/orderer.example.com/orderers/orderer.orderer.example.com/tls:/var/hyperledger/orderer/tls
+      - ../state/orderer:/var/hyperledger/production/orderer
+    ports:
+      - "7050:7050"
+      - "7053:7053"
+    networks:
+      - fabric_nuclear
+
+  peer0.domestic.example.com:
+    image: hyperledger/fabric-peer:2.5
+    container_name: peer0.domestic.example.com
+    hostname: peer0.domestic.example.com
+    environment:
+      FABRIC_LOGGING_SPEC: INFO
+      CORE_VM_ENDPOINT: unix:///host/var/run/docker.sock
+      CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE: fabric_nuclear
+      CORE_PEER_TLS_ENABLED: "true"
+      CORE_PEER_PROFILE_ENABLED: "false"
+      CORE_PEER_TLS_CERT_FILE: /etc/hyperledger/fabric/tls/server.crt
+      CORE_PEER_TLS_KEY_FILE: /etc/hyperledger/fabric/tls/server.key
+      CORE_PEER_TLS_ROOTCERT_FILE: /etc/hyperledger/fabric/tls/ca.crt
+      CORE_PEER_ID: peer0.domestic.example.com
+      CORE_PEER_ADDRESS: peer0.domestic.example.com:7051
+      CORE_PEER_LISTENADDRESS: 0.0.0.0:7051
+      CORE_PEER_CHAINCODEADDRESS: peer0.domestic.example.com:7052
+      CORE_PEER_CHAINCODELISTENADDRESS: 0.0.0.0:7052
+      CORE_PEER_GOSSIP_BOOTSTRAP: peer0.domestic.example.com:7051
+      CORE_PEER_GOSSIP_EXTERNALENDPOINT: peer0.domestic.example.com:7051
+      CORE_PEER_LOCALMSPID: DomesticNuclearRegulatorMSP
+      CORE_LEDGER_STATE_STATEDATABASE: goleveldb
+      CORE_OPERATIONS_LISTENADDRESS: 0.0.0.0:9443
+    working_dir: /root
+    command: peer node start
+    volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
+      - ../organizations/peerOrganizations/domestic.example.com/peers/peer0.domestic.example.com/msp:/etc/hyperledger/fabric/msp
+      - ../organizations/peerOrganizations/domestic.example.com/peers/peer0.domestic.example.com/tls:/etc/hyperledger/fabric/tls
+      - ../state/peer0.domestic:/var/hyperledger/production
+    ports:
+      - "7051:7051"
+      - "9443:9443"
+    networks:
+      - fabric_nuclear
+
+  peer0.coordination.example.com:
+    image: hyperledger/fabric-peer:2.5
+    container_name: peer0.coordination.example.com
+    hostname: peer0.coordination.example.com
+    environment:
+      FABRIC_LOGGING_SPEC: INFO
+      CORE_VM_ENDPOINT: unix:///host/var/run/docker.sock
+      CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE: fabric_nuclear
+      CORE_PEER_TLS_ENABLED: "true"
+      CORE_PEER_PROFILE_ENABLED: "false"
+      CORE_PEER_TLS_CERT_FILE: /etc/hyperledger/fabric/tls/server.crt
+      CORE_PEER_TLS_KEY_FILE: /etc/hyperledger/fabric/tls/server.key
+      CORE_PEER_TLS_ROOTCERT_FILE: /etc/hyperledger/fabric/tls/ca.crt
+      CORE_PEER_ID: peer0.coordination.example.com
+      CORE_PEER_ADDRESS: peer0.coordination.example.com:8051
+      CORE_PEER_LISTENADDRESS: 0.0.0.0:8051
+      CORE_PEER_CHAINCODEADDRESS: peer0.coordination.example.com:8052
+      CORE_PEER_CHAINCODELISTENADDRESS: 0.0.0.0:8052
+      CORE_PEER_GOSSIP_BOOTSTRAP: peer0.coordination.example.com:8051
+      CORE_PEER_GOSSIP_EXTERNALENDPOINT: peer0.coordination.example.com:8051
+      CORE_PEER_LOCALMSPID: CoordinatingAuthorityMSP
+      CORE_LEDGER_STATE_STATEDATABASE: goleveldb
+      CORE_OPERATIONS_LISTENADDRESS: 0.0.0.0:9444
+    working_dir: /root
+    command: peer node start
+    volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
+      - ../organizations/peerOrganizations/coordination.example.com/peers/peer0.coordination.example.com/msp:/etc/hyperledger/fabric/msp
+      - ../organizations/peerOrganizations/coordination.example.com/peers/peer0.coordination.example.com/tls:/etc/hyperledger/fabric/tls
+      - ../state/peer0.coordination:/var/hyperledger/production
+    ports:
+      - "8051:8051"
+      - "9444:9444"
+    networks:
+      - fabric_nuclear
+
+  peer0.foreign.example.com:
+    image: hyperledger/fabric-peer:2.5
+    container_name: peer0.foreign.example.com
+    hostname: peer0.foreign.example.com
+    environment:
+      FABRIC_LOGGING_SPEC: INFO
+      CORE_VM_ENDPOINT: unix:///host/var/run/docker.sock
+      CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE: fabric_nuclear
+      CORE_PEER_TLS_ENABLED: "true"
+      CORE_PEER_PROFILE_ENABLED: "false"
+      CORE_PEER_TLS_CERT_FILE: /etc/hyperledger/fabric/tls/server.crt
+      CORE_PEER_TLS_KEY_FILE: /etc/hyperledger/fabric/tls/server.key
+      CORE_PEER_TLS_ROOTCERT_FILE: /etc/hyperledger/fabric/tls/ca.crt
+      CORE_PEER_ID: peer0.foreign.example.com
+      CORE_PEER_ADDRESS: peer0.foreign.example.com:9051
+      CORE_PEER_LISTENADDRESS: 0.0.0.0:9051
+      CORE_PEER_CHAINCODEADDRESS: peer0.foreign.example.com:9052
+      CORE_PEER_CHAINCODELISTENADDRESS: 0.0.0.0:9052
+      CORE_PEER_GOSSIP_BOOTSTRAP: peer0.foreign.example.com:9051
+      CORE_PEER_GOSSIP_EXTERNALENDPOINT: peer0.foreign.example.com:9051
+      CORE_PEER_LOCALMSPID: ForeignNuclearRegulatorMSP
+      CORE_LEDGER_STATE_STATEDATABASE: goleveldb
+      CORE_OPERATIONS_LISTENADDRESS: 0.0.0.0:9445
+    working_dir: /root
+    command: peer node start
+    volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
+      - ../organizations/peerOrganizations/foreign.example.com/peers/peer0.foreign.example.com/msp:/etc/hyperledger/fabric/msp
+      - ../organizations/peerOrganizations/foreign.example.com/peers/peer0.foreign.example.com/tls:/etc/hyperledger/fabric/tls
+      - ../state/peer0.foreign:/var/hyperledger/production
+    ports:
+      - "9051:9051"
+      - "9445:9445"
+    networks:
+      - fabric_nuclear
+
+networks:
+  fabric_nuclear:
+    name: fabric_nuclear

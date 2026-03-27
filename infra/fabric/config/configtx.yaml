@@ -1,0 +1,179 @@
+Organizations:
+  - &OrdererOrg
+    Name: OrdererMSP
+    ID: OrdererMSP
+    MSPDir: ../organizations/ordererOrganizations/orderer.example.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('OrdererMSP.member')"
+      Writers:
+        Type: Signature
+        Rule: "OR('OrdererMSP.member')"
+      Admins:
+        Type: Signature
+        Rule: "OR('OrdererMSP.admin')"
+    OrdererEndpoints:
+      - orderer.orderer.example.com:7050
+
+  - &DomesticNuclearRegulator
+    Name: DomesticNuclearRegulatorMSP
+    ID: DomesticNuclearRegulatorMSP
+    MSPDir: ../organizations/peerOrganizations/domestic.example.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('DomesticNuclearRegulatorMSP.admin', 'DomesticNuclearRegulatorMSP.peer', 'DomesticNuclearRegulatorMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('DomesticNuclearRegulatorMSP.admin', 'DomesticNuclearRegulatorMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('DomesticNuclearRegulatorMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('DomesticNuclearRegulatorMSP.peer')"
+    AnchorPeers:
+      - Host: peer0.domestic.example.com
+        Port: 7051
+
+  - &CoordinatingAuthority
+    Name: CoordinatingAuthorityMSP
+    ID: CoordinatingAuthorityMSP
+    MSPDir: ../organizations/peerOrganizations/coordination.example.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('CoordinatingAuthorityMSP.admin', 'CoordinatingAuthorityMSP.peer', 'CoordinatingAuthorityMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('CoordinatingAuthorityMSP.admin', 'CoordinatingAuthorityMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('CoordinatingAuthorityMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('CoordinatingAuthorityMSP.peer')"
+    AnchorPeers:
+      - Host: peer0.coordination.example.com
+        Port: 8051
+
+  - &ForeignNuclearRegulator
+    Name: ForeignNuclearRegulatorMSP
+    ID: ForeignNuclearRegulatorMSP
+    MSPDir: ../organizations/peerOrganizations/foreign.example.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('ForeignNuclearRegulatorMSP.admin', 'ForeignNuclearRegulatorMSP.peer', 'ForeignNuclearRegulatorMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('ForeignNuclearRegulatorMSP.admin', 'ForeignNuclearRegulatorMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('ForeignNuclearRegulatorMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('ForeignNuclearRegulatorMSP.peer')"
+    AnchorPeers:
+      - Host: peer0.foreign.example.com
+        Port: 9051
+
+Capabilities:
+  Channel: &ChannelCapabilities
+    V2_0: true
+  Orderer: &OrdererCapabilities
+    V2_0: true
+  Application: &ApplicationCapabilities
+    V2_0: true
+
+Application: &ApplicationDefaults
+  Organizations:
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+    LifecycleEndorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+    Endorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+  Capabilities:
+    <<: *ApplicationCapabilities
+
+Orderer: &OrdererDefaults
+  OrdererType: etcdraft
+  Addresses:
+    - orderer.orderer.example.com:7050
+  EtcdRaft:
+    Consenters:
+      - Host: orderer.orderer.example.com
+        Port: 7050
+        ClientTLSCert: ../organizations/ordererOrganizations/orderer.example.com/orderers/orderer.orderer.example.com/tls/server.crt
+        ServerTLSCert: ../organizations/ordererOrganizations/orderer.example.com/orderers/orderer.orderer.example.com/tls/server.crt
+  BatchTimeout: 2s
+  BatchSize:
+    MaxMessageCount: 10
+    AbsoluteMaxBytes: 99 MB
+    PreferredMaxBytes: 512 KB
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+    BlockValidation:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+  Organizations:
+  Capabilities:
+    <<: *OrdererCapabilities
+
+Channel: &ChannelDefaults
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+  Capabilities:
+    <<: *ChannelCapabilities
+
+Profiles:
+  NuclearWorkflowOrdererGenesis:
+    <<: *ChannelDefaults
+    Orderer:
+      <<: *OrdererDefaults
+      Organizations:
+        - *OrdererOrg
+    Consortiums:
+      NuclearWorkflowConsortium:
+        Organizations:
+          - *DomesticNuclearRegulator
+          - *CoordinatingAuthority
+          - *ForeignNuclearRegulator
+
+  RegulatoryWorkflowChannel:
+    Consortium: NuclearWorkflowConsortium
+    <<: *ChannelDefaults
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *DomesticNuclearRegulator
+        - *CoordinatingAuthority
+        - *ForeignNuclearRegulator

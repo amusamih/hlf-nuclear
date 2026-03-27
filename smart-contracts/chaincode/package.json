@@ -1,0 +1,20 @@
+{
+  "name": "@prototype/chaincode",
+  "private": true,
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "fabric-chaincode-node start",
+    "lint": "node -e \"console.log('chaincode: no linter configured yet')\"",
+    "test": "node -e \"console.log('chaincode: no tests configured yet')\""
+  },
+  "dependencies": {
+    "@prototype/shared": "file:vendor/shared",
+    "fabric-contract-api": "^2.5.8",
+    "fabric-shim": "^2.5.8",
+    "reflect-metadata": "^0.2.2"
+  },
+  "devDependencies": {
+  }
+}

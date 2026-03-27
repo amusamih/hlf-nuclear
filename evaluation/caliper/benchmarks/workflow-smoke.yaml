@@ -1,0 +1,159 @@
+test:
+  name: workflow-smoke-benchmark
+  description: >
+    One-transaction-per-round smoke validation for the seeded workflow benchmark dataset.
+  workers:
+    type: local
+    number: 1
+  rounds:
+    - label: add-document-reference
+      description: Smoke validation for off-chain document metadata anchoring.
+      txNumber: 1
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 1
+      workload:
+        module: workloads/document-anchor.js
+        arguments:
+          contractId: DocumentContract
+          contractFunction: "DocumentContract:addDocumentReference"
+          seedNamespace: benchsmoke2
+          seedCasePattern: "{ns}-anchor-case-{n}"
+          documentIdPattern: "{ns}-doc-anchor-extra-{n}"
+          startIndex: 1
+          indexWidth: 4
+          actorRole: coordination_officer
+          actorOrgId: coordination-authority-benchmark
+          actorOrgType: coordinating_authority
+          documentType: coordination_forwarding_package
+
+    - label: update-document-version
+      description: Smoke validation for explicit document supersession.
+      txNumber: 1
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 1
+      workload:
+        module: workloads/document-version.js
+        arguments:
+          contractId: DocumentContract
+          contractFunction: "DocumentContract:updateDocumentVersion"
+          seedNamespace: benchsmoke2
+          seedCasePattern: "{ns}-issued-case-{n}"
+          supersedesDocumentPattern: "{ns}-doc-assurance-instrument-v1-{n}"
+          documentIdPattern: "{ns}-doc-assurance-instrument-v2-{n}"
+          startIndex: 1
+          indexWidth: 4
+          actorRole: coordination_officer
+          actorOrgId: coordination-authority-benchmark
+          actorOrgType: coordinating_authority
+          documentType: assurance_instrument
+          version: 2
+
+    - label: submit-case
+      description: Smoke validation for case submission.
+      txNumber: 1
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 1
+      workload:
+        module: workloads/transition-state.js
+        arguments:
+          contractId: CaseContract
+          contractFunction: submitCase
+          mode: documented
+          seedNamespace: benchsmoke2
+          seedCasePattern: "{ns}-draft-case-{n}"
+          startIndex: 1
+          indexWidth: 4
+          actorRole: applicant_case_manager
+          actorOrgId: applicant-org-benchmark
+          actorOrgType: applicant_organization
+          documentTypes:
+            - assurance_application_form
+            - item_technical_specification
+            - end_use_declaration
+          relatedDocumentPatterns:
+            - "{ns}-doc-app-form-{n}"
+            - "{ns}-doc-spec-{n}"
+            - "{ns}-doc-enduse-{n}"
+          justification: Smoke benchmark submission of a complete case.
+
+    - label: domestic-review-transition
+      description: Smoke validation for domestic review initiation.
+      txNumber: 1
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 1
+      workload:
+        module: workloads/transition-state.js
+        arguments:
+          contractId: CaseContract
+          contractFunction: recordDomesticReview
+          mode: simple
+          seedNamespace: benchsmoke2
+          seedCasePattern: "{ns}-submitted-case-{n}"
+          startIndex: 1
+          indexWidth: 4
+          actorRole: domestic_regulator_officer
+          actorOrgId: domestic-regulator-benchmark
+          actorOrgType: domestic_regulator
+          justification: Smoke benchmark domestic review initiation.
+
+    - label: substantive-amendment-initiation
+      description: Smoke validation for substantive amendment initiation.
+      txNumber: 1
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 1
+      workload:
+        module: workloads/transition-state.js
+        arguments:
+          contractId: CaseContract
+          contractFunction: initiateSubstantiveAmendment
+          mode: documented
+          seedNamespace: benchsmoke2
+          seedCasePattern: "{ns}-issued-case-{n}"
+          startIndex: 1
+          indexWidth: 4
+          actorRole: domestic_regulator_officer
+          actorOrgId: domestic-regulator-benchmark
+          actorOrgType: domestic_regulator
+          documentTypes:
+            - amendment_request_package
+          relatedDocumentPatterns:
+            - "{ns}-doc-amendment-request-{n}"
+          justification: Smoke benchmark substantive amendment initiation.
+
+    - label: amendment-finalization
+      description: Smoke validation for amended assurance finalization.
+      txNumber: 1
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 1
+      workload:
+        module: workloads/transition-state.js
+        arguments:
+          contractId: CaseContract
+          contractFunction: amendAssurance
+          mode: documented
+          seedNamespace: benchsmoke2
+          seedCasePattern: "{ns}-approved-amendment-case-{n}"
+          startIndex: 1
+          indexWidth: 4
+          actorRole: coordination_officer
+          actorOrgId: coordination-authority-benchmark
+          actorOrgType: coordinating_authority
+          documentTypes:
+            - amendment_request_package
+            - assurance_instrument
+          relatedDocumentPatterns:
+            - "{ns}-doc-amendment-package-approved-{n}"
+            - "{ns}-doc-amended-instrument-{n}"
+          justification: Smoke benchmark amendment finalization.
