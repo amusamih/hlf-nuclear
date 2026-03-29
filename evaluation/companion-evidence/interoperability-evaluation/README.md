@@ -23,6 +23,8 @@ Included files:
   - paper-facing trace of the executed cross-system exchange path
 - `message-mapping.md`
   - paper-facing mapping from exchanged API messages to canonical workflow handling
+- `message-examples/`
+  - representative domestic-side and foreign-side JSON messages before and after internal canonical mapping
 
 Recommended paper usage:
 

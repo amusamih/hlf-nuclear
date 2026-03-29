@@ -1,0 +1,9 @@
+{
+  "messageId": "msg-interop-1774408572706-foreign-decision",
+  "schemaVersion": "v1",
+  "timestamp": "2026-03-25T03:16:36.000Z",
+  "correlationId": "case-712595b3-cd8b-43cd-8650-0be20f329353:foreign-forward",
+  "caseId": "case-712595b3-cd8b-43cd-8650-0be20f329353",
+  "decision": "approved",
+  "justification": "Foreign simulator approves the forwarded case."
+}

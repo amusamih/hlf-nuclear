@@ -1,0 +1,56 @@
+{
+  "messageId": "msg-interop-1774408572706-intake",
+  "schemaVersion": "v1",
+  "timestamp": "2026-03-25T03:16:20.000Z",
+  "correlationId": "interop-1774408572706",
+  "caseId": "ext-interop-1774408572706",
+  "sourceSystem": "domestic-intake-emulator",
+  "applicant": {
+    "applicantOrgId": "applicant-org-interop",
+    "applicantOrgName": "Synthetic Applicant Organization"
+  },
+  "caseDraft": {
+    "itemCategory": "fresh_fuel_component",
+    "itemDescription": "Unirradiated fuel assembly shipment request",
+    "quantity": 2,
+    "originJurisdiction": "Jurisdiction-A",
+    "destinationJurisdiction": "Jurisdiction-B",
+    "intendedUse": "peaceful_nuclear_power_generation",
+    "legalTreatyBasis": "sandbox-bilateral-assurance-arrangement",
+    "priority": "routine",
+    "remarksSummary": "Domestic emulator handoff for interoperability validation.",
+    "visibilityScope": [
+      "applicant_organization",
+      "domestic_regulator",
+      "coordinating_authority",
+      "auditor_body"
+    ]
+  },
+  "documentManifest": [
+    {
+      "documentId": "manifest-interop-1774408572706-application",
+      "documentType": "assurance_application_form",
+      "fileName": "assurance-application.txt",
+      "mimeType": "text/plain",
+      "classification": "restricted",
+      "contentBase64": "YXNzdXJhbmNlIGFwcGxpY2F0aW9u"
+    },
+    {
+      "documentId": "manifest-interop-1774408572706-spec",
+      "documentType": "item_technical_specification",
+      "fileName": "technical-specification.txt",
+      "mimeType": "text/plain",
+      "classification": "restricted",
+      "contentBase64": "dGVjaG5pY2FsIHNwZWNpZmljYXRpb24="
+    },
+    {
+      "documentId": "manifest-interop-1774408572706-enduse",
+      "documentType": "end_use_declaration",
+      "fileName": "end-use-declaration.txt",
+      "mimeType": "text/plain",
+      "classification": "restricted",
+      "contentBase64": "ZW5kIHVzZSBkZWNsYXJhdGlvbg=="
+    }
+  ],
+  "autoSubmit": true
+}

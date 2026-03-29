@@ -1,0 +1,37 @@
+{
+  "validatedAgainst": "DomesticIntakeMessage",
+  "schemaVersion": "v1",
+  "normalizedInto": {
+    "internalApplicantActor": {
+      "role": "applicant_case_manager",
+      "organizationType": "applicant_organization",
+      "organizationId": "applicant-org-interop"
+    },
+    "canonicalCaseDraft": {
+      "itemCategory": "fresh_fuel_component",
+      "itemDescription": "Unirradiated fuel assembly shipment request",
+      "quantity": 2,
+      "originJurisdiction": "Jurisdiction-A",
+      "destinationJurisdiction": "Jurisdiction-B",
+      "intendedUse": "peaceful_nuclear_power_generation",
+      "priority": "routine"
+    },
+    "canonicalDocumentTypes": [
+      "assurance_application_form",
+      "item_technical_specification",
+      "end_use_declaration"
+    ],
+    "workflowOperations": [
+      "create_draft",
+      "upload_document_reference",
+      "submit_case"
+    ]
+  },
+  "observedExecutionResult": {
+    "correlationId": "interop-1774408572706",
+    "resultingCaseId": "case-712595b3-cd8b-43cd-8650-0be20f329353",
+    "resultingCaseNumber": "NRA-2026-0401",
+    "resultingState": "submitted",
+    "uploadedDocumentCount": 3
+  }
+}

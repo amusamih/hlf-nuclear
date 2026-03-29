@@ -1,0 +1,28 @@
+{
+  "validatedAgainst": "ForeignDecisionMessage",
+  "schemaVersion": "v1",
+  "normalizedInto": {
+    "internalDecisionActor": {
+      "role": "foreign_regulator_officer",
+      "organizationType": "foreign_regulator",
+      "organizationId": "foreign-regulator-sandbox"
+    },
+    "canonicalWorkflowAction": "approve_case",
+    "anchoredEvidence": {
+      "documentType": "foreign_regulator_response",
+      "documentGenerated": true
+    },
+    "requiredFieldsUsed": [
+      "caseId",
+      "correlationId",
+      "decision",
+      "justification"
+    ]
+  },
+  "observedExecutionResult": {
+    "correlationId": "case-712595b3-cd8b-43cd-8650-0be20f329353:foreign-forward",
+    "resultingCaseId": "case-712595b3-cd8b-43cd-8650-0be20f329353",
+    "resultingState": "approved",
+    "anchoredDocumentType": "foreign_regulator_response"
+  }
+}
