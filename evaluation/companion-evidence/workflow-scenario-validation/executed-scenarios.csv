@@ -1,0 +1,10 @@
+scenario_id,scenario_class,paper_facing_description,expected_terminal_state,observed_terminal_or_blocked_state,case_state_after_scenario,duration_ms,audit_event_count,verified_document_count,step_count
+normal-approval-fuel-shipment,positive_lifecycle,"Routine cross-border approval path with domestic review, coordination forwarding, foreign review, and issuance",issued,issued,issued,35448,8,1,17
+more-info-loop,positive_lifecycle,"Additional-information path in which the applicant responds and the case resumes to the saved review context before issuance",issued,issued,issued,43386,10,1,21
+rejection-missing-documents,positive_lifecycle,"Negative review path in which the case is rejected during review due to missing or unsatisfactory supporting evidence",rejected,rejected,rejected,14420,4,0,7
+substantive-amendment-post-issuance,positive_lifecycle,"Post-issuance substantive amendment with renewed review and document supersession trace",amended,amended,amended,55771,14,1,27
+non-substantive-amendment-post-issuance,positive_lifecycle,"Post-issuance non-substantive amendment finalized without renewed foreign review",amended,amended,amended,43357,10,1,21
+revocation,positive_lifecycle,"Post-issuance revocation path ending in terminal revocation state",revoked,revoked,revoked,39156,9,0,19
+unauthorized-attempt,blocked_path,"Applicant attempts a regulator-only review transition",blocked,blocked,submitted,10404,2,0,6
+missing-document-path,blocked_path,"Submission attempted without the minimum mandatory submission bundle",blocked,blocked,draft,6208,1,0,4
+invalid-transition-attempt,blocked_path,"Legitimate actor attempts a transition from the wrong state",blocked,blocked,under_domestic_review,12423,3,0,7

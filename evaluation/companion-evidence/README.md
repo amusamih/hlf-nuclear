@@ -15,6 +15,8 @@ Included files:
   - detailed scenario-runner output including successful and blocked workflow traces
 - `interoperability-validation.json`
   - integration-path trace for the foreign exchange and issued-document verification flow
+- `workflow-scenario-validation/`
+  - paper-facing index of the executed workflow validation scenarios, including a representative trace and a compact scenario summary
 
 These artifacts are companion evidence for the paper. They are not required to run the system,
 but they are kept in Git so the implementation repository retains the proof trail behind the
