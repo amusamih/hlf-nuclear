@@ -29,8 +29,11 @@ evaluation/paper-assets/
 evaluation/caliper/report.html
 evaluation/interoperability-runner/results/
 evaluation/scenario-runner/results/
+evaluation/local-bundles/
 scripts/paper-assets/
 packages/shared/src/**/*.js
 packages/shared/src/**/*.d.ts
 apps/frontend/vite.config.js
 apps/frontend/vite.config.d.ts
+.tmp/
+zenodolink.txt

@@ -20,7 +20,7 @@ $chaincodeName = "nuclear-assurance"
 $chaincodeLabel = "nuclear-assurance_1"
 $chaincodeVersion = "0.1.0"
 $chaincodeSequence = "1"
-$signaturePolicy = "OutOf(2, 'DomesticNuclearRegulatorMSP.peer', 'CoordinatingAuthorityMSP.peer', 'ForeignNuclearRegulatorMSP.peer')"
+$signaturePolicy = "OutOf(2,'DomesticNuclearRegulatorMSP.peer','CoordinatingAuthorityMSP.peer','ForeignNuclearRegulatorMSP.peer')"
 $ordererCaPath = "/workspace/organizations/ordererOrganizations/orderer.example.com/orderers/orderer.orderer.example.com/tls/ca.crt"
 $hostOrdererTlsCaPath = Join-Path $fabricRoot "organizations\ordererOrganizations\orderer.example.com\orderers\orderer.orderer.example.com\tls\ca.crt"
 $ordererHostAlias = "orderer.orderer.example.com"
@@ -53,12 +53,14 @@ function Invoke-DockerCommand([string[]]$Arguments) {
       -RedirectStandardError $stderrPath
 
     [string]$stdout = if (Test-Path $stdoutPath) {
-      Get-Content $stdoutPath -Raw
+      $content = Get-Content $stdoutPath -Raw
+      if ($null -eq $content) { "" } else { [string]$content }
     } else {
       ""
     }
     [string]$stderr = if (Test-Path $stderrPath) {
-      Get-Content $stderrPath -Raw
+      $content = Get-Content $stderrPath -Raw
+      if ($null -eq $content) { "" } else { [string]$content }
     } else {
       ""
     }

@@ -9,6 +9,7 @@ import {
 } from "react";
 import {
   DOCUMENT_TYPES,
+  METRICS,
   TRANSITIONS,
   WORKFLOW_STATES,
   type AssuranceCase,
@@ -90,6 +91,377 @@ function getDefaultView(workspaceKey: WorkspaceKey): AppView {
   }
 }
 
+const WORKFLOW_PROGRESS_STEPS = [
+  { state: "draft", label: "Draft" },
+  { state: "submitted", label: "Submitted" },
+  { state: "under_domestic_review", label: "Domestic review" },
+  { state: "awaiting_coordination", label: "Coordination" },
+  { state: "forwarded_to_foreign_authority", label: "Forwarded" },
+  { state: "under_foreign_review", label: "Foreign review" },
+  { state: "approved", label: "Approved" },
+  { state: "issued", label: "Issued" },
+] as const;
+
+function getProgressState(caseRecord?: AssuranceCase) {
+  if (!caseRecord) {
+    return undefined;
+  }
+
+  if (caseRecord.currentState === "more_information_requested") {
+    return caseRecord.currentSubstate ?? "under_domestic_review";
+  }
+
+  if (
+    caseRecord.currentState === "amended" ||
+    caseRecord.currentState === "revoked" ||
+    caseRecord.currentState === "closed_archived"
+  ) {
+    return "issued";
+  }
+
+  if (caseRecord.currentState === "rejected") {
+    return "under_foreign_review";
+  }
+
+  return caseRecord.currentState;
+}
+
+function getProgressNote(caseRecord?: AssuranceCase) {
+  if (!caseRecord) {
+    return "Pick a case from the queue to inspect its stage and next valid action.";
+  }
+
+  switch (caseRecord.currentState) {
+    case "more_information_requested":
+      return "The case is paused pending a response package and will resume at the stored review context.";
+    case "amended":
+      return "An amended assurance is the current active baseline for the case.";
+    case "revoked":
+      return "The assurance has been revoked and remains available for post-issuance inspection.";
+    case "rejected":
+      return "The case ended in rejection and remains available for audit and closure.";
+    case "closed_archived":
+      return "The case is closed and retained as an archival record.";
+    default:
+      return "Completed stages are shown to the left of the current workflow position.";
+  }
+}
+
+function getNextActionHint(
+  caseRecord: AssuranceCase | undefined,
+  availableTransitions: TransitionDefinition[],
+) {
+  if (availableTransitions.length > 0) {
+    return `Next valid action: ${transitionLabel(availableTransitions[0].action)}.`;
+  }
+
+  if (!caseRecord) {
+    return "Select a case to reveal the next valid workflow action.";
+  }
+
+  switch (caseRecord.currentState) {
+    case "submitted":
+      return "Awaiting domestic review intake.";
+    case "under_domestic_review":
+      return "Domestic review is active in the current regulatory lane.";
+    case "awaiting_coordination":
+      return "Awaiting coordination checks and foreign forwarding.";
+    case "forwarded_to_foreign_authority":
+      return "Awaiting foreign acknowledgement and review start.";
+    case "under_foreign_review":
+      return "Awaiting a foreign decision or additional-information request.";
+    case "approved":
+      return "Issuance is now available to the coordinating authority.";
+    case "rejected":
+      return "The case is terminal unless it is formally closed.";
+    case "issued":
+      return "The active assurance can be amended, revoked, or closed.";
+    case "amended":
+      return "The amended assurance is the active baseline.";
+    case "revoked":
+      return "The revoked assurance remains auditable until closure.";
+    case "closed_archived":
+      return "The case is archived and no further workflow action is expected.";
+    default:
+      return "Review the case details to determine the next operational step.";
+  }
+}
+
+function describeProgressStatus(caseRecord?: AssuranceCase) {
+  if (!caseRecord) {
+    return "No case selected";
+  }
+
+  switch (caseRecord.currentState) {
+    case "more_information_requested":
+      return "Paused for applicant response";
+    case "rejected":
+      return "Terminated in rejection";
+    case "revoked":
+      return "Assurance revoked";
+    case "closed_archived":
+      return "Archive-only record";
+    case "amended":
+      return "Amended assurance active";
+    default:
+      return humanize(caseRecord.currentState);
+  }
+}
+
+function getMetricDefinition(metricId: string) {
+  return METRICS.find((metric) => metric.metricId === metricId);
+}
+
+function formatMetricTitle(metricId: string) {
+  const definition = getMetricDefinition(metricId);
+  switch (metricId) {
+    case "fabric_invoke_latency_ms":
+      return "Fabric invoke latency";
+    case "transition_latency_ms":
+      return "Workflow transition latency";
+    case "document_anchor_latency_ms":
+      return "Document anchoring time";
+    case "document_integrity_verification_ms":
+      return "Document verification time";
+    case "audit_reconstruction_ms":
+      return "Audit reconstruction time";
+    case "transaction_success_count":
+      return "Transaction success count";
+    case "transaction_failure_count":
+      return "Transaction failure count";
+    case "integration_exchange_success_count":
+      return "Exchange success count";
+    case "integration_exchange_failure_count":
+      return "Exchange failure count";
+    case "domestic_intake_latency_ms":
+      return "Domestic intake latency";
+    case "foreign_simulator_exchange_latency_ms":
+      return "Foreign exchange latency";
+    case "status_sync_generation_ms":
+      return "Status-sync generation time";
+    default:
+      return definition ? humanize(definition.metricId) : humanize(metricId);
+  }
+}
+
+function formatMetricPrimary(metric: MetricSummaryRow) {
+  const definition = getMetricDefinition(metric.metricId);
+  if (definition?.unit === "count") {
+    return {
+      label: "Total",
+      value: formatInteger(metric.count),
+    };
+  }
+
+  return {
+    label: "Avg",
+    value: formatMetricValue(metric.average),
+  };
+}
+
+function formatMetricSecondary(metric: MetricSummaryRow) {
+  const definition = getMetricDefinition(metric.metricId);
+  if (definition?.unit === "count") {
+    return {
+      label: "Observed",
+      value: `${formatInteger(metric.count)} event${metric.count === 1 ? "" : "s"}`,
+    };
+  }
+
+  return {
+    label: "P95",
+    value: formatMetricValue(metric.p95),
+  };
+}
+
+function formatMetricCategory(metricId: string) {
+  const definition = getMetricDefinition(metricId);
+  return definition ? humanize(definition.category) : "Metric";
+}
+
+function truncateCaseReference(caseId: string) {
+  if (caseId.length <= 22) {
+    return caseId;
+  }
+
+  return `${caseId.slice(0, 8)}...${caseId.slice(-6)}`;
+}
+
+function CaseWorkspaceHeader(props: {
+  selectedCase?: AssuranceCase;
+  activeDocumentCount: number;
+  availableTransitions: TransitionDefinition[];
+  canCreateCase: boolean;
+  isCreateFormOpen: boolean;
+  setIsCreateFormOpen: (value: boolean) => void;
+}) {
+  if (!props.selectedCase) {
+    return (
+      <section className="panel workspace-header-card">
+        <div className="workspace-header-top">
+          <div>
+            <p className="panel-kicker">Case workspace</p>
+            <h2>No case selected</h2>
+          </div>
+          {props.canCreateCase ? (
+            <button
+              className="secondary-button calm-button"
+              onClick={() => props.setIsCreateFormOpen(!props.isCreateFormOpen)}
+              type="button"
+            >
+              {props.isCreateFormOpen ? "Hide creation form" : "New application"}
+            </button>
+          ) : null}
+        </div>
+        <p className="muted">
+          Select a case from the queue to review its dossier, workflow stage, and
+          next permitted action.
+        </p>
+      </section>
+    );
+  }
+
+  return (
+    <section className="panel workspace-header-card">
+      <div className="workspace-header-top">
+        <div>
+          <p className="panel-kicker">Case workspace</p>
+          <h2>{props.selectedCase.caseNumber}</h2>
+          <p className="workspace-header-lead">
+            {props.selectedCase.itemDescription}
+          </p>
+        </div>
+        <div className="workspace-header-actions">
+          <StateBadge state={props.selectedCase.currentState} />
+          {props.canCreateCase ? (
+            <button
+              className="secondary-button calm-button"
+              onClick={() => props.setIsCreateFormOpen(!props.isCreateFormOpen)}
+              type="button"
+            >
+              {props.isCreateFormOpen ? "Hide creation form" : "New application"}
+            </button>
+          ) : null}
+        </div>
+      </div>
+      <div className="workspace-header-meta">
+        <div>
+          <span className="meta-label">Applicant</span>
+          <strong>{props.selectedCase.applicantOrgName}</strong>
+        </div>
+        <div>
+          <span className="meta-label">Route</span>
+          <strong>
+            {props.selectedCase.originJurisdiction} to{" "}
+            {props.selectedCase.destinationJurisdiction}
+          </strong>
+        </div>
+        <div>
+          <span className="meta-label">Priority</span>
+          <strong>{humanize(props.selectedCase.priority)}</strong>
+        </div>
+        <div>
+          <span className="meta-label">Last updated</span>
+          <strong>{formatDateTime(props.selectedCase.lastUpdatedAt)}</strong>
+        </div>
+      </div>
+      <div className="workspace-header-pills">
+        <span className="soft-pill emphasis-pill">
+          {getNextActionHint(props.selectedCase, props.availableTransitions)}
+        </span>
+        <span className="soft-pill">
+          {formatInteger(props.activeDocumentCount)} active document
+          {props.activeDocumentCount === 1 ? "" : "s"}
+        </span>
+        <span className="soft-pill">
+          {formatInteger(props.availableTransitions.length)} available action
+          {props.availableTransitions.length === 1 ? "" : "s"}
+        </span>
+        <span className="soft-pill">
+          Assurance version v{props.selectedCase.currentAssuranceVersion}
+        </span>
+      </div>
+    </section>
+  );
+}
+
+function WorkflowProgressRail(props: { selectedCase?: AssuranceCase }) {
+  const progressState = getProgressState(props.selectedCase);
+  const currentIndex = progressState
+    ? WORKFLOW_PROGRESS_STEPS.findIndex((step) => step.state === progressState)
+    : -1;
+  const completedCount = currentIndex >= 0 ? currentIndex : 0;
+
+  return (
+    <section className="panel workflow-progress-card">
+      <div className="panel-header compact">
+        <div>
+          <p className="panel-kicker">Workflow</p>
+          <h2>Lifecycle position</h2>
+        </div>
+        {props.selectedCase ? (
+          <StateBadge state={props.selectedCase.currentState} />
+        ) : null}
+      </div>
+      {props.selectedCase ? (
+        <div className="workflow-status-strip">
+          <article className="workflow-status-item">
+            <span className="meta-label">Current stage</span>
+            <strong>
+              {humanize(
+                currentIndex >= 0
+                  ? WORKFLOW_PROGRESS_STEPS[currentIndex].state
+                  : props.selectedCase.currentState,
+              )}
+            </strong>
+          </article>
+          <article className="workflow-status-item">
+            <span className="meta-label">Progress</span>
+            <strong>
+              {formatInteger(completedCount)} of{" "}
+              {formatInteger(WORKFLOW_PROGRESS_STEPS.length - 1)} transitions completed
+            </strong>
+          </article>
+          <article className="workflow-status-item">
+            <span className="meta-label">Workflow posture</span>
+            <strong>{describeProgressStatus(props.selectedCase)}</strong>
+          </article>
+        </div>
+      ) : null}
+      <div className="workflow-stepper">
+        {WORKFLOW_PROGRESS_STEPS.map((step, index) => {
+          const status =
+            currentIndex === -1
+              ? "future"
+              : index < currentIndex
+                ? "complete"
+                : index === currentIndex
+                  ? "current"
+                  : "future";
+
+          return (
+            <div className={`stepper-step ${status}`} key={step.state}>
+              <span className="stepper-index">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <div className="stepper-bar" />
+              <strong>{step.label}</strong>
+              <span className="stepper-status">
+                {status === "complete"
+                  ? "Completed"
+                  : status === "current"
+                    ? "Current"
+                    : "Upcoming"}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+      <p className="muted">{getProgressNote(props.selectedCase)}</p>
+    </section>
+  );
+}
+
 function AppNavigation(props: {
   workspaceKey: WorkspaceKey;
   activeView: AppView;
@@ -134,7 +506,7 @@ function AppNavigation(props: {
   };
 
   return (
-    <nav className="tab-row app-nav">
+    <nav className="app-nav sidebar-nav">
       {views[props.workspaceKey].map((view) => (
         <button
           className={`nav-button ${props.activeView === view.key ? "active" : ""}`}
@@ -145,11 +517,11 @@ function AppNavigation(props: {
           <strong>{view.label}</strong>
         </button>
       ))}
-    </nav>
+      </nav>
   );
 }
 
-function CaseQueuePanel(props: {
+interface QueuePanelProps {
   displayedEntries: Array<{
     caseRecord: AssuranceCase;
     roleActions: TransitionDefinition[];
@@ -162,9 +534,11 @@ function CaseQueuePanel(props: {
   setStateFilter: (value: string) => void;
   selectedCaseId: string;
   setSelectedCaseId: (caseId: string) => void;
-}) {
+}
+
+function QueuePanelBody(props: QueuePanelProps) {
   return (
-    <section className="panel">
+    <>
       <div className="panel-header">
         <div>
           <p className="panel-kicker">Queue</p>
@@ -207,37 +581,66 @@ function CaseQueuePanel(props: {
       </div>
       <div className="queue-list">
         {props.displayedEntries.length === 0 ? (
-          <p className="muted">
-            No cases match the current queue view. Try widening the filters.
-          </p>
+          <div className="queue-empty-state">
+            <strong>No cases match the current queue view</strong>
+            <p className="muted">
+              Broaden the search or switch to the wider visibility filter to inspect
+              more cases.
+            </p>
+          </div>
         ) : (
           props.displayedEntries.map(({ caseRecord, roleActions }) => (
             <button
-              className={`case-card ${
+              className={`queue-row ${
                 caseRecord.caseId === props.selectedCaseId ? "selected" : ""
               }`}
               key={caseRecord.caseId}
               onClick={() => props.setSelectedCaseId(caseRecord.caseId)}
               type="button"
             >
-              <div className="case-card-top">
-                <strong>{caseRecord.caseNumber}</strong>
-                <StateBadge state={caseRecord.currentState} />
+              <div className="queue-row-main">
+                <div className="queue-row-head">
+                  <strong>{caseRecord.caseNumber}</strong>
+                  <span className="queue-route">
+                    {caseRecord.originJurisdiction} to{" "}
+                    {caseRecord.destinationJurisdiction}
+                  </span>
+                </div>
+                <p className="queue-row-title">{caseRecord.itemDescription}</p>
+                <div className="queue-row-meta">
+                  <span>{caseRecord.applicantOrgName}</span>
+                  <span>{humanize(caseRecord.priority)}</span>
+                  <span>{formatDateTime(caseRecord.lastUpdatedAt)}</span>
+                </div>
               </div>
-              <p>{caseRecord.itemDescription}</p>
-              <div className="case-meta">
-                <span>{caseRecord.applicantOrgName}</span>
-                <span>
-                  {caseRecord.originJurisdiction} to{" "}
-                  {caseRecord.destinationJurisdiction}
+              <div className="queue-row-side">
+                <StateBadge state={caseRecord.currentState} />
+                <span className="queue-count">
+                  {roleActions.length} action{roleActions.length === 1 ? "" : "s"}
                 </span>
-                <span>{humanize(caseRecord.priority)}</span>
-                <span>{roleActions.length} available actions</span>
               </div>
             </button>
           ))
         )}
       </div>
+    </>
+  );
+}
+
+function CaseQueuePanel(props: QueuePanelProps & { embedded?: boolean }) {
+  const { embedded, ...queueProps } = props;
+
+  if (embedded) {
+    return (
+      <div className="queue-panel-body">
+        <QueuePanelBody {...queueProps} />
+      </div>
+    );
+  }
+
+  return (
+    <section className="panel queue-panel">
+      <QueuePanelBody {...queueProps} />
     </section>
   );
 }
@@ -329,6 +732,95 @@ function SelectedCaseSnapshot(props: {
             <span>Foreign: {humanize(props.selectedCase.foreignRegulatorStatus)}</span>
             <span>Issuance: {humanize(props.selectedCase.issuanceStatus)}</span>
           </div>
+        </article>
+      </div>
+    </section>
+  );
+}
+
+function OperationalSummaryPanel(props: {
+  selectedCase?: AssuranceCase;
+  timeline: WorkflowEventRecord[];
+  availableTransitions: TransitionDefinition[];
+  missingRequiredDocumentTypes: DocumentType[];
+  documents: DocumentReference[];
+}) {
+  if (!props.selectedCase) {
+    return (
+      <section className="panel operational-summary-panel">
+        <div className="panel-header">
+          <div>
+            <p className="panel-kicker">Operational summary</p>
+            <h2>Awaiting case selection</h2>
+          </div>
+        </div>
+        <p className="muted">
+          Choose a case from the queue to inspect its latest event, evidence
+          posture, and next operational step.
+        </p>
+      </section>
+    );
+  }
+
+  const latestEvent = props.timeline[0];
+  const activeDocuments = props.documents.filter(
+    (documentReference) => documentReference.isActive,
+  );
+
+  return (
+    <section className="panel operational-summary-panel">
+      <div className="panel-header">
+        <div>
+          <p className="panel-kicker">Operational summary</p>
+          <h2>Selected case summary</h2>
+        </div>
+      </div>
+      <div className="summary-stack">
+        <article className="summary-spotlight">
+          <span className="meta-label">Latest recorded event</span>
+          <strong>
+            {latestEvent
+              ? transitionLabel(latestEvent.actionType)
+              : "No recorded workflow event yet"}
+          </strong>
+          <p>
+            {latestEvent
+              ? formatDateTime(latestEvent.timestamp)
+              : "The case has not produced a transition event yet."}
+          </p>
+        </article>
+        <div className="operational-summary-grid">
+          <article className="summary-cell">
+            <span className="meta-label">Next operational step</span>
+            <strong>
+              {getNextActionHint(props.selectedCase, props.availableTransitions)}
+            </strong>
+          </article>
+          <article className="summary-cell">
+            <span className="meta-label">Evidence readiness</span>
+            <strong>
+              {props.missingRequiredDocumentTypes.length > 0
+                ? `Missing ${props.missingRequiredDocumentTypes.length} required type(s)`
+                : "Required evidence satisfied for the active action"}
+            </strong>
+          </article>
+          <article className="summary-cell">
+            <span className="meta-label">Audit position</span>
+            <strong>
+              Sequence {formatInteger(props.selectedCase.auditSequenceNumber)}
+            </strong>
+          </article>
+          <article className="summary-cell">
+            <span className="meta-label">Active dossier</span>
+            <strong>
+              {formatInteger(activeDocuments.length)} active document
+              {activeDocuments.length === 1 ? "" : "s"}
+            </strong>
+          </article>
+        </div>
+        <article className="summary-cell wide">
+          <span className="meta-label">Remarks</span>
+          <strong>{props.selectedCase.remarksSummary || "No remarks recorded"}</strong>
         </article>
       </div>
     </section>
@@ -539,6 +1031,7 @@ export function App() {
     tone: "neutral",
     text: "Select a role and open a case to continue.",
   });
+  const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
   const [isBusy, setIsBusy] = useState(false);
   const [backendReady, setBackendReady] = useState(true);
 
@@ -567,6 +1060,7 @@ export function App() {
     setVerificationResults({});
     setQueueMode("actionable");
     setActiveView(getDefaultView(workspaceKey));
+    setIsCreateFormOpen(false);
   }, [workspaceKey, activeWorkspace.actor]);
 
   useEffect(() => {
@@ -738,6 +1232,7 @@ export function App() {
         tone: "success",
         text: `Draft ${response.caseRecord.caseNumber} created on the live workflow path.`,
       });
+      setIsCreateFormOpen(false);
       setActiveView("workflow");
     } catch (error) {
       handleError(error, "Unable to create the draft case.");
@@ -904,46 +1399,83 @@ export function App() {
     Boolean(selectedCaseId) && isUploadAllowed(activeWorkspace.actor);
   const isReadOnlyWorkspace =
     activeWorkspace.actor.organizationType === "auditor_body";
+  const activeDocumentCount = documents.filter(
+    (documentReference) => documentReference.isActive,
+  ).length;
+  const relevantExchanges = selectedCaseId
+    ? exchanges.filter((exchange) => exchange.caseId === selectedCaseId)
+    : exchanges;
+  const successfulExchanges = relevantExchanges.filter(
+    (exchange) => exchange.status !== "rejected",
+  ).length;
+  const transitionLatencyMetric = metrics.find(
+    (metric) => metric.metricId === "transition_latency_ms",
+  );
+  const lastExchange = relevantExchanges[0];
 
   return (
-    <main className="pro-shell">
-      <aside className="shell-sidebar">
-        <div className="shell-brand">
+    <main className="pro-shell app-shell">
+      <header className="shell-brand shell-brand-banner">
+        <div className="shell-brand-main">
           <p className="eyebrow">Cross-Border Nuclear Regulatory Workflow Platform</p>
-          <h1>Regulatory Workflow Console</h1>
-          <p className="muted">
-            Permissioned workflow platform for cross-border regulatory authorization.
-          </p>
+          <h1>Cross-Border Authorization Console</h1>
         </div>
+        <div className="shell-brand-aside">
+          <span className="meta-label">Operational focus</span>
+          <p className="muted">{activeWorkspace.description}</p>
+        </div>
+      </header>
 
-        <section className="sidebar-section">
-          <p className="panel-kicker">Role</p>
-          <div className="workspace-selector">
-            {WORKSPACE_PROFILES.map((profile) => (
-              <button
-                className={`workspace-chip ${
-                  profile.key === workspaceKey ? "active" : ""
-                }`}
-              key={profile.key}
-              onClick={() => {
-                setWorkspaceKey(profile.key);
-                setActiveView(getDefaultView(profile.key));
-              }}
-              type="button"
-            >
-                <strong>{profile.label}</strong>
-              </button>
-            ))}
+      <aside className="shell-sidebar">
+        <section className="panel sidebar-hub">
+          <div className="sidebar-hub-section">
+            <p className="panel-kicker">Role</p>
+            <div className="workspace-selector compact">
+              {WORKSPACE_PROFILES.map((profile) => (
+                <button
+                  className={`workspace-chip ${
+                    profile.key === workspaceKey ? "active" : ""
+                  }`}
+                  key={profile.key}
+                  onClick={() => {
+                    setWorkspaceKey(profile.key);
+                    setActiveView(getDefaultView(profile.key));
+                  }}
+                  type="button"
+                >
+                  <strong>{profile.label}</strong>
+                </button>
+              ))}
+            </div>
           </div>
-        </section>
 
-        <section className="sidebar-section">
-          <p className="panel-kicker">Screens</p>
-          <AppNavigation
-            activeView={activeView}
-            setActiveView={setActiveView}
-            workspaceKey={workspaceKey}
-          />
+          <div className="sidebar-hub-divider" />
+
+          <div className="sidebar-hub-section">
+            <p className="panel-kicker">Screens</p>
+            <AppNavigation
+              activeView={activeView}
+              setActiveView={setActiveView}
+              workspaceKey={workspaceKey}
+            />
+          </div>
+
+          <div className="sidebar-hub-divider" />
+
+          <div className="sidebar-hub-section queue-section">
+            <CaseQueuePanel
+              displayedEntries={displayedEntries}
+              embedded
+              queueMode={queueMode}
+              searchQuery={searchQuery}
+              selectedCaseId={selectedCaseId}
+              setQueueMode={setQueueMode}
+              setSearchQuery={setSearchQuery}
+              setSelectedCaseId={setSelectedCaseId}
+              setStateFilter={setStateFilter}
+              stateFilter={stateFilter}
+            />
+          </div>
         </section>
 
       </aside>
@@ -952,7 +1484,11 @@ export function App() {
         <header className="content-header">
           <div>
             <p className="eyebrow">{activeWorkspace.label}</p>
-            <h2>{humanize(activeView)}</h2>
+            <h2>{humanize(activeView)} workspace</h2>
+            <p className="muted">
+              Select a case from the queue, inspect its stage, and act through the
+              role-specific workspace.
+            </p>
           </div>
           <div className={`status-banner status-${feedback.tone}`}>
             <strong>
@@ -993,6 +1529,17 @@ export function App() {
           />
         </section>
 
+        <CaseWorkspaceHeader
+          activeDocumentCount={activeDocumentCount}
+          availableTransitions={availableTransitions}
+          canCreateCase={canCreateCase}
+          isCreateFormOpen={isCreateFormOpen}
+          selectedCase={selectedCase}
+          setIsCreateFormOpen={setIsCreateFormOpen}
+        />
+
+        <WorkflowProgressRail selectedCase={selectedCase} />
+
         {activeView === "overview" ? (
           <section className="overview-grid">
             <SelectedCaseSnapshot
@@ -1000,7 +1547,7 @@ export function App() {
               selectedCase={selectedCase}
             />
 
-            {canCreateCase ? (
+            {canCreateCase && isCreateFormOpen ? (
               <section className="panel">
                 <div className="panel-header">
                   <div>
@@ -1008,164 +1555,131 @@ export function App() {
                     <h2>New application</h2>
                   </div>
                 </div>
-                <details className="drawer">
-                  <summary>Create a new draft</summary>
-                  <form className="form-stack" onSubmit={handleCreateDraft}>
-                    <div className="field-grid two-up">
-                      <label>
-                        Applicant organization
-                        <input
-                          value={draftForm.applicantOrgName}
-                          onChange={(event) =>
-                            setDraftForm((current) => ({
-                              ...current,
-                              applicantOrgName: event.target.value,
-                            }))
-                          }
-                        />
-                      </label>
-                      <label>
-                        Item category
-                        <input
-                          value={draftForm.itemCategory}
-                          onChange={(event) =>
-                            setDraftForm((current) => ({
-                              ...current,
-                              itemCategory: event.target.value,
-                            }))
-                          }
-                        />
-                      </label>
-                      <label className="field-span">
-                        Item description
-                        <textarea
-                          rows={3}
-                          value={draftForm.itemDescription}
-                          onChange={(event) =>
-                            setDraftForm((current) => ({
-                              ...current,
-                              itemDescription: event.target.value,
-                            }))
-                          }
-                        />
-                      </label>
-                      <label>
-                        Quantity
-                        <input
-                          min="1"
-                          type="number"
-                          value={draftForm.quantity}
-                          onChange={(event) =>
-                            setDraftForm((current) => ({
-                              ...current,
-                              quantity: event.target.value,
-                            }))
-                          }
-                        />
-                      </label>
-                      <label>
-                        Priority
-                        <select
-                          value={draftForm.priority}
-                          onChange={(event) =>
-                            setDraftForm((current) => ({
-                              ...current,
-                              priority: event.target.value as AssuranceCase["priority"],
-                            }))
-                          }
-                        >
-                          <option value="routine">Routine</option>
-                          <option value="urgent">Urgent</option>
-                          <option value="critical">Critical</option>
-                        </select>
-                      </label>
-                      <label>
-                        Origin
-                        <input
-                          value={draftForm.originJurisdiction}
-                          onChange={(event) =>
-                            setDraftForm((current) => ({
-                              ...current,
-                              originJurisdiction: event.target.value,
-                            }))
-                          }
-                        />
-                      </label>
-                      <label>
-                        Destination
-                        <input
-                          value={draftForm.destinationJurisdiction}
-                          onChange={(event) =>
-                            setDraftForm((current) => ({
-                              ...current,
-                              destinationJurisdiction: event.target.value,
-                            }))
-                          }
-                        />
-                      </label>
-                      <label className="field-span">
-                        Intended use
-                        <input
-                          value={draftForm.intendedUse}
-                          onChange={(event) =>
-                            setDraftForm((current) => ({
-                              ...current,
-                              intendedUse: event.target.value,
-                            }))
-                          }
-                        />
-                      </label>
-                    </div>
-                    <button className="primary-button" disabled={isBusy} type="submit">
-                      Create draft
-                    </button>
-                  </form>
-                </details>
+                <form className="form-stack" onSubmit={handleCreateDraft}>
+                  <div className="field-grid two-up">
+                    <label>
+                      Applicant organization
+                      <input
+                        value={draftForm.applicantOrgName}
+                        onChange={(event) =>
+                          setDraftForm((current) => ({
+                            ...current,
+                            applicantOrgName: event.target.value,
+                          }))
+                        }
+                      />
+                    </label>
+                    <label>
+                      Item category
+                      <input
+                        value={draftForm.itemCategory}
+                        onChange={(event) =>
+                          setDraftForm((current) => ({
+                            ...current,
+                            itemCategory: event.target.value,
+                          }))
+                        }
+                      />
+                    </label>
+                    <label className="field-span">
+                      Item description
+                      <textarea
+                        rows={3}
+                        value={draftForm.itemDescription}
+                        onChange={(event) =>
+                          setDraftForm((current) => ({
+                            ...current,
+                            itemDescription: event.target.value,
+                          }))
+                        }
+                      />
+                    </label>
+                    <label>
+                      Quantity
+                      <input
+                        min="1"
+                        type="number"
+                        value={draftForm.quantity}
+                        onChange={(event) =>
+                          setDraftForm((current) => ({
+                            ...current,
+                            quantity: event.target.value,
+                          }))
+                        }
+                      />
+                    </label>
+                    <label>
+                      Priority
+                      <select
+                        value={draftForm.priority}
+                        onChange={(event) =>
+                          setDraftForm((current) => ({
+                            ...current,
+                            priority: event.target.value as AssuranceCase["priority"],
+                          }))
+                        }
+                      >
+                        <option value="routine">Routine</option>
+                        <option value="urgent">Urgent</option>
+                        <option value="elevated">Elevated</option>
+                      </select>
+                    </label>
+                    <label>
+                      Origin
+                      <input
+                        value={draftForm.originJurisdiction}
+                        onChange={(event) =>
+                          setDraftForm((current) => ({
+                            ...current,
+                            originJurisdiction: event.target.value,
+                          }))
+                        }
+                      />
+                    </label>
+                    <label>
+                      Destination
+                      <input
+                        value={draftForm.destinationJurisdiction}
+                        onChange={(event) =>
+                          setDraftForm((current) => ({
+                            ...current,
+                            destinationJurisdiction: event.target.value,
+                          }))
+                        }
+                      />
+                    </label>
+                    <label className="field-span">
+                      Intended use
+                      <input
+                        value={draftForm.intendedUse}
+                        onChange={(event) =>
+                          setDraftForm((current) => ({
+                            ...current,
+                            intendedUse: event.target.value,
+                          }))
+                        }
+                      />
+                    </label>
+                  </div>
+                  <button className="primary-button calm-button" disabled={isBusy} type="submit">
+                    Create draft
+                  </button>
+                </form>
               </section>
             ) : (
-              <section className="panel">
-                <div className="panel-header">
-                  <div>
-                    <p className="panel-kicker">Current record</p>
-                    <h2>Selected case summary</h2>
-                  </div>
-                </div>
-                {selectedCase ? (
-                  <div className="subtle-list">
-                    <div className="subtle-list-item">
-                      <strong>Current assurance version</strong>
-                      <span>{selectedCase.currentAssuranceVersion}</span>
-                    </div>
-                    <div className="subtle-list-item">
-                      <strong>Audit sequence</strong>
-                      <span>{selectedCase.auditSequenceNumber}</span>
-                    </div>
-                    <div className="subtle-list-item">
-                      <strong>Remarks</strong>
-                      <span>{selectedCase.remarksSummary || "None recorded"}</span>
-                    </div>
-                  </div>
-                ) : (
-                  <p className="muted">Choose a case to inspect its current record.</p>
-                )}
-              </section>
+              <OperationalSummaryPanel
+                availableTransitions={availableTransitions}
+                documents={documents}
+                missingRequiredDocumentTypes={missingRequiredDocumentTypes}
+                selectedCase={selectedCase}
+                timeline={timeline}
+              />
             )}
           </section>
         ) : null}
 
         {activeView === "workflow" ? (
-          <section className="workflow-grid">
-            <CaseQueuePanel
-              displayedEntries={displayedEntries}
-              queueMode={queueMode}
-              searchQuery={searchQuery}
-              selectedCaseId={selectedCaseId}
-              setQueueMode={setQueueMode}
-              setSearchQuery={setSearchQuery}
-              setSelectedCaseId={setSelectedCaseId}
-              setStateFilter={setStateFilter}
-              stateFilter={stateFilter}
-            />
+          <section className="workflow-grid workspace-grid-single">
             <WorkflowActionPanel
               availableTransitions={availableTransitions}
               documents={documents}
@@ -1366,7 +1880,7 @@ export function App() {
         ) : null}
 
         {activeView === "audit" ? (
-          <section className="workflow-grid">
+          <section className="workflow-grid audit-grid">
             <section className="panel">
               <div className="panel-header">
                 <div>
@@ -1416,47 +1930,147 @@ export function App() {
                   <h2>Metrics and exchanges</h2>
                 </div>
               </div>
+              <div className="evidence-kpi-strip">
+                <article className="evidence-kpi-card">
+                  <span className="meta-label">Total exchanges</span>
+                  <strong>{formatInteger(relevantExchanges.length)}</strong>
+                  <p className="muted">Recorded for the selected case context.</p>
+                </article>
+                <article className="evidence-kpi-card">
+                  <span className="meta-label">Successful exchanges</span>
+                  <strong>{formatInteger(successfulExchanges)}</strong>
+                  <p className="muted">Accepted or applied counterpart events.</p>
+                </article>
+                <article className="evidence-kpi-card">
+                  <span className="meta-label">Avg workflow latency</span>
+                  <strong>
+                    {transitionLatencyMetric
+                      ? formatMetricValue(transitionLatencyMetric.average)
+                      : "Not recorded"}
+                  </strong>
+                  <p className="muted">Mean transition processing time.</p>
+                </article>
+                <article className="evidence-kpi-card">
+                  <span className="meta-label">Last counterpart event</span>
+                  <strong>
+                    {lastExchange ? humanize(lastExchange.messageType) : "No exchange yet"}
+                  </strong>
+                  <p className="muted">
+                    {lastExchange
+                      ? formatDateTime(lastExchange.timestamp)
+                      : "No counterpart activity recorded for this case yet."}
+                  </p>
+                </article>
+              </div>
               <div className="metric-stack">
                 {metrics.length === 0 ? (
                   <p className="muted">
                     Metrics appear after workflow actions or verification steps.
                   </p>
                 ) : (
-                  metrics.map((metric) => (
-                    <article className="metric-card" key={metric.metricId}>
-                      <div className="metric-top">
-                        <strong>{humanize(metric.metricId)}</strong>
-                        <span>{formatInteger(metric.count)} observations</span>
-                      </div>
-                      <p>{getMetricDescription(metric.metricId)}</p>
-                      <div className="metric-values">
-                        <span>Avg {formatMetricValue(metric.average)}</span>
-                        <span>P95 {formatMetricValue(metric.p95)}</span>
-                      </div>
-                    </article>
-                  ))
+                  metrics.map((metric) => {
+                    const definition = getMetricDefinition(metric.metricId);
+                    const primary = formatMetricPrimary(metric);
+                    const secondary = formatMetricSecondary(metric);
+                    const isCountMetric = definition?.unit === "count";
+
+                    return (
+                      <article
+                        className={`metric-card metric-card-refined metric-category-${
+                          definition?.category ?? "feasibility"
+                        }`}
+                        key={metric.metricId}
+                        title={getMetricDescription(metric.metricId)}
+                      >
+                        <div className="metric-top refined">
+                          <strong>{formatMetricTitle(metric.metricId)}</strong>
+                          <div className="metric-badge-row">
+                            <span className="metric-category-badge">
+                              {formatMetricCategory(metric.metricId)}
+                            </span>
+                            <span className="metric-observation-badge">
+                              {formatInteger(metric.count)} obs
+                            </span>
+                          </div>
+                        </div>
+                        <div className="metric-primary">
+                          <span className="metric-primary-label">{primary.label}</span>
+                          <strong>{primary.value}</strong>
+                        </div>
+                        <div className="metric-secondary-grid">
+                          <div>
+                            <span className="metric-secondary-label">
+                              {secondary.label}
+                            </span>
+                            <strong>{secondary.value}</strong>
+                          </div>
+                          <div>
+                            <span className="metric-secondary-label">
+                              {isCountMetric ? "Peak" : "Min"}
+                            </span>
+                            <strong>
+                              {isCountMetric
+                                ? formatInteger(metric.max)
+                                : formatMetricValue(metric.min)}
+                            </strong>
+                          </div>
+                        </div>
+                      </article>
+                    );
+                  })
                 )}
               </div>
 
-              <div className="subsection">
-                <h3>Recent counterpart activity</h3>
-                <div className="exchange-list">
-                  {exchanges.length === 0 ? (
-                    <p className="muted">
-                      No exchange records have been generated in this backend
-                      process yet.
-                    </p>
+              <div className="subsection evidence-activity-section">
+                <div className="subsection-heading">
+                  <h3>Recent counterpart activity</h3>
+                  <span className="metric-observation-badge">
+                    {formatInteger(relevantExchanges.length)} events
+                  </span>
+                </div>
+                <div className="activity-list">
+                  {relevantExchanges.length === 0 ? (
+                    <div className="activity-empty-state">
+                      <strong>No counterpart activity recorded</strong>
+                      <p className="muted">
+                        This case has not yet produced a simulator exchange in the
+                        current evaluation session. When domestic or foreign messages
+                        are relayed, they will appear here with direction, status, and
+                        timestamp.
+                      </p>
+                    </div>
                   ) : (
-                    exchanges.map((exchange) => (
-                      <article className="exchange-card" key={exchange.exchangeId}>
-                        <div className="exchange-top">
-                          <strong>{humanize(exchange.messageType)}</strong>
-                          <span>{formatDateTime(exchange.timestamp)}</span>
+                    relevantExchanges.map((exchange) => (
+                      <article className="activity-row" key={exchange.exchangeId}>
+                        <div className="activity-row-main">
+                          <div className="activity-row-top">
+                            <strong>{humanize(exchange.messageType)}</strong>
+                            <span className="activity-time">
+                              {formatDateTime(exchange.timestamp)}
+                            </span>
+                          </div>
+                          <div className="activity-badges">
+                            <span
+                              className={`activity-badge direction-${exchange.direction.toLowerCase()}`}
+                            >
+                              {humanize(exchange.direction)}
+                            </span>
+                            <span
+                              className={`activity-badge status-${exchange.status.toLowerCase()}`}
+                            >
+                              {humanize(exchange.status)}
+                            </span>
+                            <span className="activity-badge neutral">
+                              {humanize(exchange.simulator)}
+                            </span>
+                          </div>
+                          <p className="activity-case-ref">
+                            Case{" "}
+                            <span title={exchange.caseId}>
+                              {truncateCaseReference(exchange.caseId)}
+                            </span>
+                          </p>
                         </div>
-                        <p>
-                          {humanize(exchange.direction)} / {humanize(exchange.status)}
-                        </p>
-                        <p className="muted">Case {exchange.caseId}</p>
                       </article>
                     ))
                   )}

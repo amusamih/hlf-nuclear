@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "run": "node dist/index.js",
+    "archive": "node dist/index.js archive",
     "screenshot-pack": "node dist/screenshot-pack.js",
     "lint": "node -e \"console.log('scenario-runner: no linter configured yet')\"",
     "test": "node -e \"console.log('scenario-runner: no tests configured yet')\""
