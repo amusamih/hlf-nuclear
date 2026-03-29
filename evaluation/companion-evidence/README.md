@@ -17,6 +17,8 @@ Included files:
   - integration-path trace for the foreign exchange and issued-document verification flow
 - `workflow-scenario-validation/`
   - paper-facing index of the executed workflow validation scenarios, including a representative trace and a compact scenario summary
+- `interoperability-evaluation/`
+  - paper-facing summary of the executed interoperability validation run, including a representative exchange trace and a compact metric summary
 
 These artifacts are companion evidence for the paper. They are not required to run the system,
 but they are kept in Git so the implementation repository retains the proof trail behind the
