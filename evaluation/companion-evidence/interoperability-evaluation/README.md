@@ -21,6 +21,8 @@ Included files:
   - compact machine-readable summary of the same run
 - `representative-interoperability-trace.md`
   - paper-facing trace of the executed cross-system exchange path
+- `message-mapping.md`
+  - paper-facing mapping from exchanged API messages to canonical workflow handling
 
 Recommended paper usage:
 
